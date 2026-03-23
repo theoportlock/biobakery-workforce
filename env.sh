@@ -1,31 +1,26 @@
 #!/usr/bin/env bash
-# Environment setup for fellowship project
+set -e
 
 # Data path
 export INPUT="testdata/*_R{1,2}_001.fastq.gz"
 export OUTPUT="work"
 
-# TESTING
-#export read1="testdata/FG00004_S26_L001_R1_001.fastq.gz"
-#export read2="testdata/FG00004_S26_L002_R2_001.fastq.gz"
-
 # Configuration
 export KNEADDATA_DB="human_genome"
 export KNEADDATA_DB_DIR="db/kneaddata_db"
-#export KNEADDATA_CONTAINER_CMD="docker run --rm -v ${PWD}:${PWD} -v $PWD:/data -w /data biobakery/kneaddata:latest"
-export KNEADDATA_CONTAINER_CMD="docker run --rm -v $PWD:/data -w /data biobakery/kneaddata:latest"
-#export KNEADDATA_CONTAINER_CMD="singularity exec --bind /path/to/data:/data kneaddata.sif"
+export KNEADDATA_CONTAINER_CMD="singularity exec -B $PWD:/data images/kneaddata.sif"
+#export KNEADDATA_CONTAINER_CMD="docker run --rm -v $PWD:/data -w /data biobakery/kneaddata:latest"
 
-#export EXECUTOR="sbatch --wait"
+export METAPHLAN_DB="mpa_vJan25_CHOCOPhlAnSGB_202503"
+export METAPHLAN_DB_DIR="db/metaphlan_db"
+export METAPHLAN_CONTAINER_CMD="singularity exec -B $PWD:/data images/metaphlan.sif"
+#export METAPHLAN_CONTAINER_CMD="docker run --rm -v $PWD:/data -w /data biobakery/metaphlan:latest"
+
 export EXECUTOR="bash"
+#export EXECUTOR="sbatch --wait"
 
 # Add project paths to PATH
 export PATH="code:$PATH"
 
 # Activate Python virtual environment
-if [ -f venv/bin/activate ]; then
-    . venv/bin/activate
-else
-    echo "No venv found at venv/bin/activate"
-fi
-
+. venv/bin/activate

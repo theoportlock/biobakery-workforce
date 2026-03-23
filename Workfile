@@ -297,7 +297,7 @@ kneaddata_database \
   $KNEADDATA_DB_DIR| \
 tail -n 5</data>
       <data key="d2">-121.91464646464448</data>
-      <data key="d3">494.0504329004334</data>
+      <data key="d3">474.0504329004334</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p db/kneaddata_db
 kneaddata_database \
@@ -319,38 +319,223 @@ parallel \
   --colsep '\t' \
   --joblog $OUTPUT/logs/kneaddata.log \
   --resume-failed \
-  --jobs 1 \
+  --jobs 2 \
   $EXECUTOR \
     code/kneaddata.sh \
       {sample_id} {read1} {read2} \
       $KNEADDATA_DB_DIR \
       $OUTPUT/kneaddata \
-  :::: $output/ids.tsv</data>
+  :::: $OUTPUT/ids.tsv</data>
       <data key="d2">281.77922077922074</data>
       <data key="d3">231.23809523809524</data>
-      <data key="d4">fail</data>
+      <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
 parallel \
   --header : \
   --colsep '\''\t'\'' \
   --joblog $OUTPUT/logs/kneaddata.log \
   --resume-failed \
-  --jobs 1 \
+  --jobs 2 \
   $EXECUTOR \
     code/kneaddata.sh \
       {sample_id} {read1} {read2} \
       $KNEADDATA_DB_DIR \
       $OUTPUT/kneaddata \
-  :::: $output/ids.tsv'</data>
-      <data key="d6" />
-      <data key="d7">mkdir: cannot create directory '/data': Permission denied
-mkdir: cannot create directory '/data': Permission denied
-mkdir: cannot create directory '/data': Permission denied
-mkdir: cannot create directory '/data': Permission denied
-mkdir: cannot create directory '/data': Permission denied
+  :::: $OUTPUT/ids.tsv'</data>
+      <data key="d6">[kneaddata] Executing for FG00004_S26_L004_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersi5bpbotc_decompressed_93cm1waw_FG00004_S26_L004_R2_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersyjrp9ebu_decompressed_rzdhc29w_FG00004_S26_L004_R1_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.1.fastq ): 196.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.2.fastq ): 196.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.1.fastq ): 13.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.2.fastq ): 5.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 194.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 194.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq ): 194.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq ): 194.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 13.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq ): 13.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq ): 5.0
+
+Final output files created: 
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00004_S26_L004_R_001
+[kneaddata] Executing for FG00004_S26_L001_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/reformatted_identifiers2z92bgfs_decompressed_t_44d6_3_FG00004_S26_L001_R2_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/reformatted_identifierss8ohzn2i_decompressed_qokg7l00_FG00004_S26_L001_R1_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001.trimmed.1.fastq ): 209.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001.trimmed.2.fastq ): 209.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001.trimmed.single.1.fastq ): 14.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001.trimmed.single.2.fastq ): 9.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 207.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 207.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_paired_1.fastq ): 207.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_paired_2.fastq ): 207.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 14.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_unmatched_1.fastq ): 14.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 10.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_unmatched_2.fastq ): 10.0
+
+Final output files created: 
+/data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_paired_1.fastq
+/data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_paired_2.fastq
+/data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00004_S26_L001_R_001_kneaddata/FG00004_S26_L001_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00004_S26_L001_R_001
+[kneaddata] Executing for FG00004_S26_L002_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/reformatted_identifiers7v9sf733_decompressed_y8ob537__FG00004_S26_L002_R2_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/reformatted_identifiers8ybkbsp7_decompressed_c9sfufzb_FG00004_S26_L002_R1_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001.trimmed.1.fastq ): 198.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001.trimmed.2.fastq ): 198.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001.trimmed.single.1.fastq ): 15.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001.trimmed.single.2.fastq ): 4.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 196.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 196.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_paired_1.fastq ): 196.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_paired_2.fastq ): 196.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 16.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_unmatched_1.fastq ): 16.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_unmatched_2.fastq ): 5.0
+
+Final output files created: 
+/data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_paired_1.fastq
+/data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_paired_2.fastq
+/data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00004_S26_L002_R_001_kneaddata/FG00004_S26_L002_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00004_S26_L002_R_001
+[kneaddata] Executing for FG00005_S50_L001_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/reformatted_identifiers940a0m28_decompressed_m67w7yjs_FG00005_S50_L001_R1_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/reformatted_identifiersj8w5ut_5_decompressed_8aa228bt_FG00005_S50_L001_R2_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001.trimmed.1.fastq ): 222.0
+Total reads after trimming ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001.trimmed.2.fastq ): 222.0
+Total reads after trimming ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001.trimmed.single.1.fastq ): 18.0
+Total reads after trimming ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001.trimmed.single.2.fastq ): 3.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 220.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 220.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_paired_1.fastq ): 220.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_paired_2.fastq ): 220.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 18.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_unmatched_1.fastq ): 18.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 3.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_unmatched_2.fastq ): 3.0
+
+Final output files created: 
+/data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_paired_1.fastq
+/data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_paired_2.fastq
+/data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00005_S50_L001_R_001_kneaddata/FG00005_S50_L001_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00005_S50_L001_R_001
+[kneaddata] Executing for FG00004_S26_L003_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/reformatted_identifiers2r9vadbm_decompressed_jr9924g3_FG00004_S26_L003_R2_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/reformatted_identifiersbejc8d9z_decompressed_ue0d2he7_FG00004_S26_L003_R1_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001.trimmed.1.fastq ): 203.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001.trimmed.2.fastq ): 203.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001.trimmed.single.1.fastq ): 8.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001.trimmed.single.2.fastq ): 4.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 203.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 203.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_paired_1.fastq ): 203.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_paired_2.fastq ): 203.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 8.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_unmatched_1.fastq ): 8.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 4.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_unmatched_2.fastq ): 4.0
+
+Final output files created: 
+/data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_paired_1.fastq
+/data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_paired_2.fastq
+/data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00004_S26_L003_R_001_kneaddata/FG00004_S26_L003_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00004_S26_L003_R_001
 </data>
-      <data key="d8">18353</data>
-      <data key="d9">5</data>
+      <data key="d7" />
+      <data key="d8">1215</data>
+      <data key="d9">0</data>
     </node>
     <node id="7bd7d578-6bac-4670-990e-fcb742c1609d">
       <data key="d1">parallel \
@@ -365,12 +550,22 @@ mkdir: cannot create directory '/data': Permission denied
       <data key="d4" />
     </node>
     <node id="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2">
-      <data key="d1">singularity pull \
-  kneaddata.sif \
+      <data key="d1">mkdir -p images
+singularity pull \
+  images/kneaddata.sif \
   docker://biobakery/kneaddata:latest</data>
-      <data key="d2">-496.29581529581526</data>
-      <data key="d3">439.20346320346323</data>
-      <data key="d4" />
+      <data key="d2">-520.2958152958153</data>
+      <data key="d3">412.20346320346323</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p images
+singularity pull \
+  images/kneaddata.sif \
+  docker://biobakery/kneaddata:latest'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+</data>
+      <data key="d8">41740</data>
+      <data key="d9">0</data>
     </node>
     <node id="710e40ff-ff20-403f-8d02-c3adc1e0cc0e">
       <data key="d1">docker pull \
@@ -417,28 +612,67 @@ docker.io/biobakery/kneaddata:latest
       <data key="d9">0</data>
     </node>
     <node id="e257bf77-3cee-4623-b292-c4be204b7150">
-      <data key="d1">sample_id=FG00004_S26_L004_R_001 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_002.fastq.gz
+      <data key="d1">sample_id=FG00004_S26_L004_R_001
+read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
 $EXECUTOR \
   code/kneaddata.sh \
-    {sample_id} {read1} {read2} \
+    $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata</data>
-      <data key="d2">170.99999999999983</data>
-      <data key="d3">-47.857142857142776</data>
-      <data key="d4">fail</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_002.fastq.gz
+      <data key="d2">110.99999999999983</data>
+      <data key="d3">-10.857142857142776</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001
+read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
 $EXECUTOR \
   code/kneaddata.sh \
-    {sample_id} {read1} {read2} \
+    $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata'</data>
-      <data key="d6" />
-      <data key="d7">mkdir: cannot create directory '/data': Permission denied
+      <data key="d6">[kneaddata] Executing for FG00004_S26_L004_R_001...
+Decompressing gzipped file ...
+
+Decompressing gzipped file ...
+
+Reformatting file sequence identifiers ...
+
+Reformatting file sequence identifiers ...
+
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersm7g0x6aj_decompressed_z_3j3ev1_FG00004_S26_L004_R1_001 ): 250.0
+Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersqp9nu0z9_decompressed_zhplkpcn_FG00004_S26_L004_R2_001 ): 250.0
+Running Trimmomatic ... 
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.1.fastq ): 196.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.2.fastq ): 196.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.1.fastq ): 13.0
+Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.2.fastq ): 5.0
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Running trf ... 
+Decontaminating ...
+Running bowtie2 ... 
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 194.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 194.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq ): 194.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq ): 194.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 13.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq ): 13.0
+Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
+Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq ): 5.0
+
+Final output files created: 
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq
+/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq
+
+[kneaddata] DONE FG00004_S26_L004_R_001
 </data>
-      <data key="d8">18660</data>
-      <data key="d9">1</data>
+      <data key="d7" />
+      <data key="d8">42007</data>
+      <data key="d9">0</data>
     </node>
     <edge source="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d10">6945afee-592c-432e-b9f8-8940312f875e</data>
@@ -562,6 +796,10 @@ $EXECUTOR \
     </edge>
     <edge source="710e40ff-ff20-403f-8d02-c3adc1e0cc0e" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
       <data key="d10">d78f9990-e3fc-45e3-a4b4-c5f2eb16d3a5</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="e257bf77-3cee-4623-b292-c4be204b7150" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
+      <data key="d10">a5a44aa7-6c10-47b5-b746-72838bf6ae71</data>
       <data key="d11">blocking</data>
     </edge>
     <data key="d0">bash -c '. env.sh &amp;&amp; {}'</data>

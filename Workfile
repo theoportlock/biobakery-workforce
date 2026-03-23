@@ -1,0 +1,569 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d11" for="edge" attr.name="edge_type" attr.type="string" />
+  <key id="d10" for="edge" attr.name="id" attr.type="string" />
+  <key id="d9" for="node" attr.name="error_code" attr.type="string" />
+  <key id="d8" for="node" attr.name="pid" attr.type="string" />
+  <key id="d7" for="node" attr.name="stderr" attr.type="string" />
+  <key id="d6" for="node" attr.name="stdout" attr.type="string" />
+  <key id="d5" for="node" attr.name="command" attr.type="string" />
+  <key id="d4" for="node" attr.name="status" attr.type="string" />
+  <key id="d3" for="node" attr.name="y" attr.type="string" />
+  <key id="d2" for="node" attr.name="x" attr.type="string" />
+  <key id="d1" for="node" attr.name="label" attr.type="string" />
+  <key id="d0" for="graph" attr.name="wrapper" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875">
+      <data key="d1">create_sample_table.py \
+  $INPUT \
+  -o $OUTPUT/ids.tsv</data>
+      <data key="d2">-129.60750360750365</data>
+      <data key="d3">220.1226551226552</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
+  $input \
+  -o $output/ids.tsv'</data>
+      <data key="d6">Success! Created work/ids.tsv with 5 pairs.
+</data>
+      <data key="d7" />
+      <data key="d8">30320</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d1">parallel \
+  --header : \
+  --colsep '\t' \
+  --joblog run.log \
+  --resume \
+  --jobs 4 \
+  "sbatch --wait code/humann.sh {name} {input_path} {output_dir}" \
+  :::: $SAMPLE_TABLE</data>
+      <data key="d2">2691.922077922078</data>
+      <data key="d3">439.8603896103897</data>
+      <data key="d4" />
+    </node>
+    <node id="480594e1-53cb-429a-b497-f2d559fa6a14">
+      <data key="d1">humann_databases \
+  --update-config no \
+  --download chocophlan full humann_db</data>
+      <data key="d2">1854.1125541125548</data>
+      <data key="d3">233.2413419913421</data>
+      <data key="d4" />
+    </node>
+    <node id="06863a26-6154-4a93-80f1-e1e2a8eadb1e">
+      <data key="d1">humann_databases \
+  --update-config no \
+  --download uniref uniref90_diamond humann_db</data>
+      <data key="d2">1954.1125541125548</data>
+      <data key="d3">313.81277056277054</data>
+      <data key="d4" />
+    </node>
+    <node id="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0">
+      <data key="d1">humann_databases \
+  --update-config no \
+  --download utility_mapping full humann_db</data>
+      <data key="d2">2099.8268398268406</data>
+      <data key="d3">392.95562770562776</data>
+      <data key="d4" />
+    </node>
+    <node id="b0eb77b6-30d5-4193-9da4-50eba027ffef">
+      <data key="d1">humann_join_tables \
+  -i .\
+  --file_name genefamilies \
+  -o humann_genefamilies_rpk.tsv</data>
+      <data key="d2">3610.505411255411</data>
+      <data key="d3">508.89610389610414</data>
+      <data key="d4" />
+    </node>
+    <node id="9be649f6-ee46-4abf-a761-ade91560b98f">
+      <data key="d1">humann_join_tables \
+  -i . \
+  --file_name pathabundance \
+  -o humann_pathabundance_rpk.tsv</data>
+      <data key="d2">3610.660173160174</data>
+      <data key="d3">308.6937229437236</data>
+      <data key="d4" />
+    </node>
+    <node id="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
+      <data key="d1">humann_renorm_table \
+  -i $genefamilies \
+  -u "cpm" \
+  -o humann_genefamilies_cpm.tsv \</data>
+      <data key="d2">3570.62445887446</data>
+      <data key="d3">680.1461038961045</data>
+      <data key="d4" />
+    </node>
+    <node id="8421a989-bfd1-4793-a41c-5a979c615dd1">
+      <data key="d1">humann_renorm_table \
+  -i $pathabundance \
+  -u "cpm" \
+  -o humann_pathabundance_cpm.tsv</data>
+      <data key="d2">3673.636363636364</data>
+      <data key="d3">58.896103896104364</data>
+      <data key="d4" />
+    </node>
+    <node id="04916e36-0405-4c18-9a08-741b32a0cb45">
+      <data key="d1">humann_regroup_table \
+  --input $genefamilies \
+  -c ${humann_db}/utility_mapping/map_level4ec_uniref90.txt.gz \
+  --output humann_level4ec.tsv</data>
+      <data key="d2">4396.75432900433</data>
+      <data key="d3">287.0735930735939</data>
+      <data key="d4" />
+    </node>
+    <node id="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
+      <data key="d1">humann_regroup_table \
+  --input $genefamilies \
+  -c ${humann_db}/utility_mapping/map_ko_uniref90.txt.gz \
+  --output humann_ko.tsv</data>
+      <data key="d2">4432.573376623379</data>
+      <data key="d3">1157.8926406926414</data>
+      <data key="d4" />
+    </node>
+    <node id="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
+      <data key="d1">humann_regroup_table \
+  --input $genefamilies \
+  -c ${humann_db}/utility_mapping/map_pfam_uniref90.txt.gz \
+  --output humann_pfam.tsv</data>
+      <data key="d2">4408.92575757576</data>
+      <data key="d3">947.7593073593082</data>
+      <data key="d4" />
+    </node>
+    <node id="905a7093-da32-4ae5-9a57-2a1dac112741">
+      <data key="d1">humann_regroup_table \
+  --input $genefamilies \
+  -c ${humann_db}/utility_mapping/map_go_uniref90.txt.gz \
+  --output humann_go.tsv</data>
+      <data key="d2">4409.6686147186165</data>
+      <data key="d3">748.6164502164515</data>
+      <data key="d4" />
+    </node>
+    <node id="e777cea5-e06e-4d96-a6ac-2a3f6197bb8e">
+      <data key="d1">humann_regroup_table \
+  --input $genefamilies \
+  -c ${humann_db}/utility_mapping/map_eggnog_uniref90.txt.gz \
+  --output humann_eggnog.tsv</data>
+      <data key="d2">4400.544805194807</data>
+      <data key="d3">597.0640692640704</data>
+      <data key="d4" />
+    </node>
+    <node id="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
+      <data key="d1">humann_rename_table \
+  -i $genefamilies \
+  -n metacyc-rxn \
+  -s \
+  -o humann_genefamilies_rename.tsv</data>
+      <data key="d2">4407.183982683986</data>
+      <data key="d3">112.18181818181813</data>
+      <data key="d4" />
+    </node>
+    <node id="7bcbe8c7-4d1e-49e6-9768-4f204c9601d6">
+      <data key="d1">humann_rename_table \
+  -i $pathabundance \
+  -n metacyc-pwy \
+  -s \
+  -o humann_pathabundance_rename.tsv</data>
+      <data key="d2">4415.457792207795</data>
+      <data key="d3">-75.79437229437212</data>
+      <data key="d4" />
+    </node>
+    <node id="30821981-f6f4-45e8-ac03-f6f4c67de722">
+      <data key="d1">humann_rename_table \
+  -i \
+  $ec \
+  -n ec \
+  -s \
+  -o humann_ec_rename.tsv</data>
+      <data key="d2">5139.910173160176</data>
+      <data key="d3">272.70562770562844</data>
+      <data key="d4" />
+    </node>
+    <node id="2ec1e923-9d0c-4eac-9df9-392199f36d1a">
+      <data key="d1">humann_rename_table \
+  -i $ko \
+  -n kegg-orthology \
+  -s \
+  -o humann_ko_rename_orthology.tsv</data>
+      <data key="d2">5045.338744588747</data>
+      <data key="d3">1219.5627705627708</data>
+      <data key="d4" />
+    </node>
+    <node id="79adcecb-7270-44cb-b374-e934aae2db28">
+      <data key="d1">humann_rename_table \
+  -i $ko \
+  -n kegg-pathway \
+  -s \
+  -o humann_ko_rename_pathway.tsv</data>
+      <data key="d2">5031.529220779224</data>
+      <data key="d3">1389.3246753246758</data>
+      <data key="d4" />
+    </node>
+    <node id="9b25e437-90c1-4629-a7aa-cab266763500">
+      <data key="d1">humann_rename_table \
+  -i $ko \
+  -n kegg-module \
+  -s \
+  -o humann_ko_rename_module.tsv</data>
+      <data key="d2">5039.624458874462</data>
+      <data key="d3">1576.2294372294373</data>
+      <data key="d4" />
+    </node>
+    <node id="f088e56b-ace9-4459-9844-07d6e02af5fc">
+      <data key="d1">humann_rename_table \
+  -i $pfam \
+  -n pfam \
+  -s \
+  -o humann_pfam_rename.tsv</data>
+      <data key="d2">5117.767316017319</data>
+      <data key="d3">973.943722943724</data>
+      <data key="d4" />
+    </node>
+    <node id="a064600e-2f40-4232-bcdd-5cceae6a58ff">
+      <data key="d1">humann_rename_table \
+  -i $go \
+  -n infogo1000 \
+  -s \
+  -o humann_go_rename.tsv</data>
+      <data key="d2">5132.148268398271</data>
+      <data key="d3">743.3246753246763</data>
+      <data key="d4" />
+    </node>
+    <node id="d4653fb4-f348-46ff-8e25-52212e43d36f">
+      <data key="d1">echo 'Databases downloaded'</data>
+      <data key="d2">2025.2220779220793</data>
+      <data key="d3">510.2008658008657</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; echo '\''Databases downloaded'\'''</data>
+      <data key="d6">Databases downloaded
+</data>
+      <data key="d7" />
+      <data key="d8">6269</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
+      <data key="d1">for genome in ${reference_genomes}/*.fna; do
+  extract_markers.py \
+    --input \$genome \
+    --output_dir . \
+    --nprocs ${task.cpus}
+done</data>
+      <data key="d2">1671.1593073593092</data>
+      <data key="d3">-311.36406926406966</data>
+      <data key="d4" />
+    </node>
+    <node id="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
+      <data key="d1">sample2markers.py \
+  --input ${samout} \
+  --nprocs ${task.cpus} \
+  --output_dir .</data>
+      <data key="d2">1686.4093073593094</data>
+      <data key="d3">-89.61406926406966</data>
+      <data key="d4" />
+    </node>
+    <node id="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
+      <data key="d1">mkdir -p strainphlan_output
+strainphlan \
+  --samples ${markers}/*.pkl \
+  --output_dir strainphlan_output \
+  --clades ${sgb} \
+  --nprocs ${task.cpus} \
+  --marker_in_n_samples ${params.min_samples_per_marker} \
+  --sample_with_n_markers ${params.min_markers_per_sample} \
+  --phylophlan_mode accurate \
+  --mutation_rates \
+  ${ref_opt}
+    
+# Move output to expected location
+mv strainphlan_output/${sgb} .</data>
+      <data key="d2">2166.4093073593094</data>
+      <data key="d3">-272.8640692640694</data>
+      <data key="d4" />
+    </node>
+    <node id="84eae342-95b5-47af-b801-02da156c908c">
+      <data key="d1">strain_transmission.py \
+  --tree ${tree} \
+  --metadata ${metadata} \
+  --threshold ${params.strain_threshold} \
+  ${save_dist_opt} \
+  --output_dir .</data>
+      <data key="d2">2762.6593073593094</data>
+      <data key="d3">-175.36406926406943</data>
+      <data key="d4" />
+    </node>
+    <node id="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
+      <data key="d1">mkdir -p db/kneaddata_db
+kneaddata_database \
+  --download $KNEADDATA_DB bowtie2 \
+  $KNEADDATA_DB_DIR| \
+tail -n 5</data>
+      <data key="d2">-121.91464646464448</data>
+      <data key="d3">494.0504329004334</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p db/kneaddata_db
+kneaddata_database \
+  --download $kneaddata_db bowtie2 \
+  db/kneaddata_db'</data>
+      <data key="d6">Download URL: https://huttenhower.sph.harvard.edu/kneadData_databases/Homo_sapiens_hg39_T2T_Bowtie2_v0.1.tar.gz
+Downloading file of size: 3.56 GB
+Extracting: /home/tpor598/biobakery-workforce/db/kneaddata_db/Homo_sapiens_hg39_T2T_Bowtie2_v0.1.tar.gz
+Database installed: /home/tpor598/biobakery-workforce/db/kneaddata_db
+</data>
+      <data key="d7" />
+      <data key="d8">30146</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="11ea34fd-c241-4e39-9605-b8c3091b1a64">
+      <data key="d1">mkdir -p work/logs/kneaddata
+parallel \
+  --header : \
+  --colsep '\t' \
+  --joblog $OUTPUT/logs/kneaddata.log \
+  --resume-failed \
+  --jobs 1 \
+  $EXECUTOR \
+    code/kneaddata.sh \
+      {sample_id} {read1} {read2} \
+      $KNEADDATA_DB_DIR \
+      $OUTPUT/kneaddata \
+  :::: $output/ids.tsv</data>
+      <data key="d2">281.77922077922074</data>
+      <data key="d3">231.23809523809524</data>
+      <data key="d4">fail</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
+parallel \
+  --header : \
+  --colsep '\''\t'\'' \
+  --joblog $OUTPUT/logs/kneaddata.log \
+  --resume-failed \
+  --jobs 1 \
+  $EXECUTOR \
+    code/kneaddata.sh \
+      {sample_id} {read1} {read2} \
+      $KNEADDATA_DB_DIR \
+      $OUTPUT/kneaddata \
+  :::: $output/ids.tsv'</data>
+      <data key="d6" />
+      <data key="d7">mkdir: cannot create directory '/data': Permission denied
+mkdir: cannot create directory '/data': Permission denied
+mkdir: cannot create directory '/data': Permission denied
+mkdir: cannot create directory '/data': Permission denied
+mkdir: cannot create directory '/data': Permission denied
+</data>
+      <data key="d8">18353</data>
+      <data key="d9">5</data>
+    </node>
+    <node id="7bd7d578-6bac-4670-990e-fcb742c1609d">
+      <data key="d1">parallel \
+  --header : \
+  --colsep '\t' \
+  --joblog $OUTPUT/logs/metaphlan.log \
+  --resume \
+  $EXECUTOR code/metaphlan.sh {name} {db_path} {r1} {r2} \
+  :::: $OUTPUT/ids.tsv</data>
+      <data key="d2">930.2510822510831</data>
+      <data key="d3">348.81385281385315</data>
+      <data key="d4" />
+    </node>
+    <node id="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2">
+      <data key="d1">singularity pull \
+  kneaddata.sif \
+  docker://biobakery/kneaddata:latest</data>
+      <data key="d2">-496.29581529581526</data>
+      <data key="d3">439.20346320346323</data>
+      <data key="d4" />
+    </node>
+    <node id="710e40ff-ff20-403f-8d02-c3adc1e0cc0e">
+      <data key="d1">docker pull \
+  biobakery/kneaddata:latest</data>
+      <data key="d2">-472.96248196248195</data>
+      <data key="d3">535.87012987013</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; docker pull \
+  biobakery/kneaddata:latest'</data>
+      <data key="d6">latest: Pulling from biobakery/kneaddata
+723dcaac5a32: Pulling fs layer
+d7c3167c320d: Pulling fs layer
+b9bd2bd4c292: Pulling fs layer
+322ed380e680: Pulling fs layer
+198dba7fdeb0: Pulling fs layer
+6ac240b13098: Pulling fs layer
+ec642ad915a3: Pulling fs layer
+131f805ec7fd: Pulling fs layer
+0fe0f8803e3e: Pulling fs layer
+322ed380e680: Download complete
+6ac240b13098: Download complete
+131f805ec7fd: Download complete
+0fe0f8803e3e: Download complete
+d7c3167c320d: Download complete
+b9bd2bd4c292: Download complete
+723dcaac5a32: Download complete
+198dba7fdeb0: Download complete
+322ed380e680: Pull complete
+6ac240b13098: Pull complete
+131f805ec7fd: Pull complete
+d7c3167c320d: Pull complete
+ec642ad915a3: Download complete
+ec642ad915a3: Pull complete
+b9bd2bd4c292: Pull complete
+0fe0f8803e3e: Pull complete
+198dba7fdeb0: Pull complete
+723dcaac5a32: Pull complete
+Digest: sha256:4990133bace84012801b573b0ce37120ba11c55fb05c75a886798b70ddb02a44
+Status: Downloaded newer image for biobakery/kneaddata:latest
+docker.io/biobakery/kneaddata:latest
+</data>
+      <data key="d7" />
+      <data key="d8">14998</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="e257bf77-3cee-4623-b292-c4be204b7150">
+      <data key="d1">sample_id=FG00004_S26_L004_R_001 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_002.fastq.gz
+$EXECUTOR \
+  code/kneaddata.sh \
+    {sample_id} {read1} {read2} \
+    $KNEADDATA_DB_DIR \
+    $OUTPUT/kneaddata</data>
+      <data key="d2">170.99999999999983</data>
+      <data key="d3">-47.857142857142776</data>
+      <data key="d4">fail</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_002.fastq.gz
+$EXECUTOR \
+  code/kneaddata.sh \
+    {sample_id} {read1} {read2} \
+    $KNEADDATA_DB_DIR \
+    $OUTPUT/kneaddata'</data>
+      <data key="d6" />
+      <data key="d7">mkdir: cannot create directory '/data': Permission denied
+</data>
+      <data key="d8">18660</data>
+      <data key="d9">1</data>
+    </node>
+    <edge source="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
+      <data key="d10">6945afee-592c-432e-b9f8-8940312f875e</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
+      <data key="d10">a61bfded-aeb5-461b-ad80-8fc3300c9019</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="b0eb77b6-30d5-4193-9da4-50eba027ffef">
+      <data key="d10">d08db0bc-5a34-4a90-9dc8-0d045edfa8b5</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="8421a989-bfd1-4793-a41c-5a979c615dd1">
+      <data key="d10">8cbda68e-eef8-4531-a6a0-bc074f3dd705</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="9be649f6-ee46-4abf-a761-ade91560b98f">
+      <data key="d10">6928d0f0-9feb-47bd-be8b-51f8ed223c3b</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="480594e1-53cb-429a-b497-f2d559fa6a14" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
+      <data key="d10">fbd13d9f-b275-4b72-afcd-87cc43dc89d6</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="06863a26-6154-4a93-80f1-e1e2a8eadb1e" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
+      <data key="d10">854f0a34-5c50-40d4-a277-56daec467e5c</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
+      <data key="d10">37233e8e-a4d9-4df9-9f57-dc1de773ccc5</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
+      <data key="d10">360f7ec1-1c9a-4b77-8248-cdb81aac7d81</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="04916e36-0405-4c18-9a08-741b32a0cb45">
+      <data key="d10">15551c83-87c9-42d5-9fbd-4b04489175a0</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
+      <data key="d10">9d6a68b9-57ad-4cfa-bbb0-6efcf4ee92ec</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
+      <data key="d10">7ff98013-a25f-4f4c-8a24-607d067f1220</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="905a7093-da32-4ae5-9a57-2a1dac112741">
+      <data key="d10">c0de80b0-8f5a-4bca-8115-b82513e4445a</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="e777cea5-e06e-4d96-a6ac-2a3f6197bb8e">
+      <data key="d10">2b62d171-7d55-4aab-9cee-3618c1679add</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="8421a989-bfd1-4793-a41c-5a979c615dd1" target="7bcbe8c7-4d1e-49e6-9768-4f204c9601d6">
+      <data key="d10">d0c5ea08-2ca4-4bfe-b0af-3c50afd90d2e</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="04916e36-0405-4c18-9a08-741b32a0cb45" target="30821981-f6f4-45e8-ac03-f6f4c67de722">
+      <data key="d10">48355573-df45-4068-bb65-58847f1eec7c</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="a3ba86ef-7c25-41f5-ae56-9ad59cb03962" target="2ec1e923-9d0c-4eac-9df9-392199f36d1a">
+      <data key="d10">7bdd0238-3222-4685-ae94-812657b01961</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="a3ba86ef-7c25-41f5-ae56-9ad59cb03962" target="79adcecb-7270-44cb-b374-e934aae2db28">
+      <data key="d10">7ba1b54e-1f6e-4c8c-b593-237a3a04b9e1</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="a3ba86ef-7c25-41f5-ae56-9ad59cb03962" target="9b25e437-90c1-4629-a7aa-cab266763500">
+      <data key="d10">03081a45-52bf-45c2-9d7c-7fb38a6e32ff</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041" target="f088e56b-ace9-4459-9844-07d6e02af5fc">
+      <data key="d10">97aeeecd-5d64-4f92-a43a-e7ad21cb1244</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="905a7093-da32-4ae5-9a57-2a1dac112741" target="a064600e-2f40-4232-bcdd-5cceae6a58ff">
+      <data key="d10">8a015ce3-e2f8-4447-8413-f47ee656511d</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="d4653fb4-f348-46ff-8e25-52212e43d36f" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d10">ac9e23f6-e66b-47d3-9609-cc81945dc18c</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="c0577b42-1729-439d-b34b-4cd2db421c23" target="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
+      <data key="d10">d7ebfff1-3457-474f-acad-e06128c790f0</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b" target="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
+      <data key="d10">b3d5b5f4-400c-4179-a9ca-e76d201b90b9</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="8fa7fdf9-9a75-43ca-9aae-714d1d65db09" target="84eae342-95b5-47af-b801-02da156c908c">
+      <data key="d10">10495137-c3f5-4b34-ada6-d492f24cb8b9</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="2084306b-d5fb-4f68-a31a-64cbce07ea7c" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
+      <data key="d10">732a4eaf-334c-472c-a5f8-884bdeb853a3</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="11ea34fd-c241-4e39-9605-b8c3091b1a64" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
+      <data key="d10">b8542fa8-1b28-4986-817f-01010459ba15</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
+      <data key="d10">2ee82f35-5750-45a8-ba90-30a51fa44b6d</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
+      <data key="d10">6fb7e7e9-fb9b-4036-805e-c6cbb9f2975b</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
+      <data key="d10">ca35f3b3-d131-4f3b-8e17-14b7dea26388</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="710e40ff-ff20-403f-8d02-c3adc1e0cc0e" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
+      <data key="d10">d78f9990-e3fc-45e3-a4b4-c5f2eb16d3a5</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <data key="d0">bash -c '. env.sh &amp;&amp; {}'</data>
+  </graph>
+</graphml>

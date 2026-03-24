@@ -10,137 +10,109 @@
 set -euo pipefail
 export LC_ALL=C
 
-############################################################
-# 1. POSITIONAL ARGUMENT MAPPING (For GNU Parallel/Executor)
-# If arguments are passed without flags, map them to variables.
-############################################################
-# Usage via Parallel: metaphlan.sh <PREFIX> <DB_PATH> <READ1> [READ2]
-if [[ $# -gt 0 && ! "$1" =~ ^- ]]; then
-    PREFIX="$1"; shift
-    DB_PATH="$1"; shift
-    # Collect remaining as inputs
-    INPUTS=("$@")
-    # Set a flag to skip the parser below
-    SKIP_PARSER=true
-fi
+# --- 1. Positional Arguments ---
+PREFIX="${1:?Missing PREFIX}"
+DB_PATH="${2:?Missing DB_PATH}"
+READ1="${3:?Missing READ1}"
+READ2="${4:-}"
+OUTDIR="${5:?Missing OUTDIR}"
 
-############################################################
-# CONFIG: Container execution wrapper
-############################################################
+# --- 2. Resources & Environment ---
+CPUS="${SLURM_CPUS_PER_TASK:-4}"
 CONTAINER_CMD="${METAPHLAN_CONTAINER_CMD:-}"
 
-############################################################
-# Defaults
-############################################################
-# Use SLURM_CPUS_PER_TASK if set by the executor, else default to 4
-CPUS="${SLURM_CPUS_PER_TASK:-4}"
-PREFIX="${PREFIX:-}"
-DB_PATH="${DB_PATH:-}"
-ARGS="${ARGS:-}"
-SAVE_SAM="${SAVE_SAM:-false}"
-INPUTS=("${INPUTS[@]:-}")
+# --- 3. Host-Side Setup ---
+SAMPLE_OUT_HOST="${OUTDIR}/${PREFIX}_metaphlan"
+EXPECTED_OUT_HOST="${SAMPLE_OUT_HOST}/${PREFIX}_profile.txt"
 
-############################################################
-# Usage & Parse arguments (Kept for manual CLI use)
-############################################################
-usage() {
-cat <<EOF
-Usage: metaphlan.sh -i <input1> [input2] -d <db_path> -p <prefix> [options]
-       OR (Positional): metaphlan.sh <prefix> <db_path> <input1> [input2]
-EOF
-exit 1
-}
-
-if [[ "${SKIP_PARSER:-false}" != "true" ]]; then
-    while [[ $# -gt 0 ]]; do
-      case "$1" in
-        -i|--input) shift; while [[ $# -gt 0 && ! "$1" =~ ^- ]]; do INPUTS+=("$1"); shift; done ;;
-        -d|--db) DB_PATH="$2"; shift 2 ;;
-        -p|--prefix) PREFIX="$2"; shift 2 ;;
-        -t|--threads) CPUS="$2"; shift 2 ;;
-        -a|--args) ARGS="$2"; shift 2 ;;
-        -s|--save-sam) SAVE_SAM=true; shift ;;
-        -h|--help) usage ;;
-        *) echo "Unknown argument: $1"; usage ;;
-      esac
-    done
-fi
-
-# Validation
-if [[ ${#INPUTS[@]} -eq 0 || -z "$DB_PATH" || -z "$PREFIX" ]]; then
-  echo "ERROR: --input, --db, and --prefix are required"
-  usage
-fi
-
-############################################################
-# IDEMPOTENCY CHECK (For Resuming)
-############################################################
-if [[ -f "${PREFIX}_profile.txt" ]]; then
-    echo "[metaphlan] ${PREFIX} already exists. Skipping."
+if [[ -f "${EXPECTED_OUT_HOST}" ]]; then
+    echo "[metaphlan] ${PREFIX} already processed. Skipping."
     exit 0
 fi
 
-############################################################
-# Logic: Input detection & DB Resolution (Your original code)
-############################################################
-export TMPDIR=$(mktemp -d)
-trap "rm -rf $TMPDIR" EXIT
+mkdir -p "$SAMPLE_OUT_HOST"
 
+# --- 4. Path Translation (Host -> Container) ---
+translate_to_container() {
+    local p="$1"
+    [[ -z "$p" ]] && return
+
+    local abs_p
+    abs_p=$(realpath "$p")
+
+    if [[ -n "$CONTAINER_CMD" ]]; then
+        if [[ "$abs_p" == "$PWD"* ]]; then
+            echo "/data${abs_p#$PWD}"
+        else
+            echo "ERROR: Path $abs_p is outside project root $PWD" >&2
+            exit 1
+        fi
+    else
+        echo "$abs_p"
+    fi
+}
+
+READ1_CT=$(translate_to_container "$READ1")
+READ2_CT=$(translate_to_container "$READ2")
+DB_PATH_CT=$(translate_to_container "$DB_PATH")
+SAMPLE_OUT_CT=$(translate_to_container "$SAMPLE_OUT_HOST")
+
+# --- 5. Input Detection ---
 INPUT_TYPE=""
 INPUT_DATA=""
 
-if [[ "${INPUTS[0]}" =~ \.(fastq|fq|fastq.gz|fq.gz)$ ]]; then
+if [[ "${READ1}" =~ \.(fastq|fq|fastq.gz|fq.gz)$ ]]; then
   INPUT_TYPE="--input_type fastq"
-  [[ ${#INPUTS[@]} -eq 2 ]] && INPUT_DATA="${INPUTS[0]},${INPUTS[1]}" || INPUT_DATA="${INPUTS[0]}"
-elif [[ "${INPUTS[0]}" =~ \.(fasta|fa|fna)$ ]]; then
-  INPUT_TYPE="--input_type fasta"; INPUT_DATA="${INPUTS[0]}"
-elif [[ "${INPUTS[0]}" =~ bowtie2out\.txt$ ]]; then
-  INPUT_TYPE="--input_type bowtie2out"; INPUT_DATA="${INPUTS[0]}"
+  [[ -n "$READ2" ]] && INPUT_DATA="${READ1_CT},${READ2_CT}" || INPUT_DATA="${READ1_CT}"
+elif [[ "${READ1}" =~ \.(fasta|fa|fna)$ ]]; then
+  INPUT_TYPE="--input_type fasta"; INPUT_DATA="${READ1_CT}"
+elif [[ "${READ1}" =~ bowtie2out\.txt$ ]]; then
+  INPUT_TYPE="--input_type bowtie2out"; INPUT_DATA="${READ1_CT}"
 else
-  INPUT_TYPE="--input_type sam"; INPUT_DATA="${INPUTS[0]}"
+  INPUT_TYPE="--input_type sam"; INPUT_DATA="${READ1_CT}"
 fi
 
 BT2_DB=$(find -L "${DB_PATH}" -name "*rev.1.bt2*" -exec dirname {} \; | head -n1)
 BT2_DB_INDEX=$(find -L "${DB_PATH}" -name "*.rev.1.bt2*" | head -n1 | sed 's/\.rev.1.bt2.*$//' | xargs basename)
 
+# --- 6. Build Command ---
 BOWTIE2_OUT=""
 SAM_OUT=""
-[[ ! "$INPUT_TYPE" =~ bowtie2out|sam ]] && BOWTIE2_OUT="--bowtie2out ${PREFIX}.bowtie2out.txt"
-[[ "$SAVE_SAM" == true ]] && SAM_OUT="-s ${PREFIX}.sam"
+[[ ! "$INPUT_TYPE" =~ bowtie2out|sam ]] && BOWTIE2_OUT="--bowtie2out ${SAMPLE_OUT_CT}/${PREFIX}.bowtie2out.txt"
+[[ "${SAVE_SAM:-false}" == true ]] && SAM_OUT="-s ${SAMPLE_OUT_CT}/${PREFIX}.sam"
 
-############################################################
-# Build & Execute
-############################################################
-MP_CMD="metaphlan \
-  --nproc ${CPUS} \
-  ${INPUT_TYPE} \
-  ${INPUT_DATA} \
-  ${ARGS} \
-  ${BOWTIE2_OUT} \
-  ${SAM_OUT} \
-  --bowtie2db ${BT2_DB} \
-  --index ${BT2_DB_INDEX} \
-  --biom ${PREFIX}.biom \
-  --output_file ${PREFIX}_profile.txt"
+CMD=(
+    metaphlan
+    --nproc "${CPUS}"
+    ${INPUT_TYPE}
+    ${INPUT_DATA}
+    ${ARGS:-}
+    ${BOWTIE2_OUT}
+    ${SAM_OUT}
+    --bowtie2db "${BT2_DB}"
+    --index "${BT2_DB_INDEX}"
+    --biom "${SAMPLE_OUT_CT}/${PREFIX}.biom"
+    --output_file "${SAMPLE_OUT_CT}/${PREFIX}_profile.txt"
+)
 
-echo "[metaphlan] Running ${PREFIX} with ${CPUS} threads"
+echo "[metaphlan] Executing for ${PREFIX}..."
 
 if [[ -n "$CONTAINER_CMD" ]]; then
-  eval "${CONTAINER_CMD} ${MP_CMD}"
+    $CONTAINER_CMD "${CMD[@]}"
 else
-  eval "${MP_CMD}"
+    "${CMD[@]}"
 fi
 
-# Versions
+# --- 7. Record Versions ---
 if [[ -n "$CONTAINER_CMD" ]]; then
-  META_VER=$(${CONTAINER_CMD} metaphlan --version 2>&1 | awk '{print $3}')
+    META_VER=$($CONTAINER_CMD metaphlan --version 2>&1 | awk '{print $3}')
 else
-  META_VER=$(metaphlan --version 2>&1 | awk '{print $3}')
+    META_VER=$(metaphlan --version 2>&1 | awk '{print $3}')
 fi
 
-cat <<EOF > "${PREFIX}_versions.yml"
+cat > "${SAMPLE_OUT_HOST}/versions.yml" <<EOF
 metaphlan:
-  version: ${META_VER}
+  version: "${META_VER}"
 EOF
 
-echo "MetaPhlAn finished successfully."
+echo "[metaphlan] DONE ${PREFIX}"

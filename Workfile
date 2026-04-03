@@ -17,23 +17,23 @@
       <data key="d1">create_sample_table.py \
   $INPUT \
   -o $OUTPUT/ids.tsv</data>
-      <data key="d2">-129.60750360750365</data>
-      <data key="d3">220.1226551226552</data>
+      <data key="d2">-256.5595727438293</data>
+      <data key="d3">398.2033807877912</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
-  $input \
-  -o $output/ids.tsv'</data>
+  $INPUT \
+  -o $OUTPUT/ids.tsv'</data>
       <data key="d6">Success! Created work/ids.tsv with 5 pairs.
 </data>
       <data key="d7" />
-      <data key="d8">30320</data>
+      <data key="d8">2771032</data>
       <data key="d9">0</data>
     </node>
     <node id="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
       <data key="d1">parallel \
   --header : \
   --colsep '\t' \
-  --joblog run.log \
+  --joblog $OUTPUT/logs/humann.log \
   --resume \
   --jobs 4 \
   "sbatch --wait code/humann.sh {name} {input_path} {output_dir}" \
@@ -43,72 +43,83 @@
       <data key="d4" />
     </node>
     <node id="480594e1-53cb-429a-b497-f2d559fa6a14">
-      <data key="d1">humann_databases \
+      <data key="d1">$HUMANN_CMD \
+humann_databases \
   --update-config no \
-  --download chocophlan full humann_db</data>
-      <data key="d2">1854.1125541125548</data>
-      <data key="d3">233.2413419913421</data>
+  --download chocophlan full \
+  $HUMANN_DB_DIR</data>
+      <data key="d2">1960.843786462372</data>
+      <data key="d3">228.02034760317548</data>
       <data key="d4" />
     </node>
     <node id="06863a26-6154-4a93-80f1-e1e2a8eadb1e">
-      <data key="d1">humann_databases \
+      <data key="d1">$HUMANN_CMD \
+humann_databases \
   --update-config no \
-  --download uniref uniref90_diamond humann_db</data>
-      <data key="d2">1954.1125541125548</data>
-      <data key="d3">313.81277056277054</data>
+  --download uniref uniref90_diamond \
+  $HUMANN_DB_DIR</data>
+      <data key="d2">1960.543527528592</data>
+      <data key="d3">347.61100546545913</data>
       <data key="d4" />
     </node>
     <node id="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0">
-      <data key="d1">humann_databases \
+      <data key="d1">$HUMANN_CMD \
+humann_databases \
   --update-config no \
-  --download utility_mapping full humann_db</data>
-      <data key="d2">2099.8268398268406</data>
-      <data key="d3">392.95562770562776</data>
+  --download utility_mapping full \
+  $HUMANN_DB_DIR</data>
+      <data key="d2">1958.7277793110395</data>
+      <data key="d3">468.5292569660901</data>
       <data key="d4" />
     </node>
     <node id="b0eb77b6-30d5-4193-9da4-50eba027ffef">
-      <data key="d1">humann_join_tables \
+      <data key="d1">$HUMANN_CMD \
+humann_join_tables \
   -i .\
   --file_name genefamilies \
   -o humann_genefamilies_rpk.tsv</data>
-      <data key="d2">3610.505411255411</data>
-      <data key="d3">508.89610389610414</data>
+      <data key="d2">3570.81283816027</data>
+      <data key="d3">586.9867557193476</data>
       <data key="d4" />
     </node>
     <node id="9be649f6-ee46-4abf-a761-ade91560b98f">
-      <data key="d1">humann_join_tables \
+      <data key="d1">$HUMANN_CMD \
+humann_join_tables \
   -i . \
   --file_name pathabundance \
   -o humann_pathabundance_rpk.tsv</data>
-      <data key="d2">3610.660173160174</data>
-      <data key="d3">308.6937229437236</data>
+      <data key="d2">3570.967600065033</data>
+      <data key="d3">283.2148468688712</data>
       <data key="d4" />
     </node>
     <node id="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
-      <data key="d1">humann_renorm_table \
+      <data key="d1">$HUMANN_CMD \
+humann_renorm_table \
   -i $genefamilies \
   -u "cpm" \
   -o humann_genefamilies_cpm.tsv \</data>
       <data key="d2">3570.62445887446</data>
-      <data key="d3">680.1461038961045</data>
+      <data key="d3">685.1461038961044</data>
       <data key="d4" />
     </node>
     <node id="8421a989-bfd1-4793-a41c-5a979c615dd1">
-      <data key="d1">humann_renorm_table \
+      <data key="d1">$HUMANN_CMD \
+humann_renorm_table \
   -i $pathabundance \
   -u "cpm" \
   -o humann_pathabundance_cpm.tsv</data>
-      <data key="d2">3673.636363636364</data>
-      <data key="d3">58.896103896104364</data>
+      <data key="d2">3571.3976850103754</data>
+      <data key="d3">169.65396217935967</data>
       <data key="d4" />
     </node>
     <node id="04916e36-0405-4c18-9a08-741b32a0cb45">
-      <data key="d1">humann_regroup_table \
+      <data key="d1">$HUMANN_CMD \
+humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_level4ec_uniref90.txt.gz \
   --output humann_level4ec.tsv</data>
-      <data key="d2">4396.75432900433</data>
-      <data key="d3">287.0735930735939</data>
+      <data key="d2">4221.843946045423</data>
+      <data key="d3">205.25211040146633</data>
       <data key="d4" />
     </node>
     <node id="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
@@ -116,129 +127,128 @@
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_ko_uniref90.txt.gz \
   --output humann_ko.tsv</data>
-      <data key="d2">4432.573376623379</data>
-      <data key="d3">1157.8926406926414</data>
+      <data key="d2">4247.8422691151745</data>
+      <data key="d3">1115.6683875479089</data>
       <data key="d4" />
     </node>
     <node id="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
-      <data key="d1">humann_regroup_table \
+      <data key="d1">$HUMANN_CMD \
+humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_pfam_uniref90.txt.gz \
   --output humann_pfam.tsv</data>
-      <data key="d2">4408.92575757576</data>
-      <data key="d3">947.7593073593082</data>
+      <data key="d2">4230.015374616853</data>
+      <data key="d3">816.0449105244206</data>
       <data key="d4" />
     </node>
     <node id="905a7093-da32-4ae5-9a57-2a1dac112741">
-      <data key="d1">humann_regroup_table \
+      <data key="d1">$HUMANN_CMD \
+humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_go_uniref90.txt.gz \
   --output humann_go.tsv</data>
-      <data key="d2">4409.6686147186165</data>
-      <data key="d3">748.6164502164515</data>
+      <data key="d2">4230.937507210412</data>
+      <data key="d3">707.3921970717189</data>
       <data key="d4" />
     </node>
     <node id="e777cea5-e06e-4d96-a6ac-2a3f6197bb8e">
-      <data key="d1">humann_regroup_table \
+      <data key="d1">$HUMANN_CMD \
+humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_eggnog_uniref90.txt.gz \
   --output humann_eggnog.tsv</data>
-      <data key="d2">4400.544805194807</data>
-      <data key="d3">597.0640692640704</data>
+      <data key="d2">4227.423713652176</data>
+      <data key="d3">601.8270296811603</data>
       <data key="d4" />
     </node>
     <node id="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $genefamilies \
   -n metacyc-rxn \
   -s \
   -o humann_genefamilies_rename.tsv</data>
-      <data key="d2">4407.183982683986</data>
-      <data key="d3">112.18181818181813</data>
+      <data key="d2">4221.452875175782</data>
+      <data key="d3">83.95756503708566</data>
       <data key="d4" />
     </node>
     <node id="7bcbe8c7-4d1e-49e6-9768-4f204c9601d6">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $pathabundance \
   -n metacyc-pwy \
   -s \
   -o humann_pathabundance_rename.tsv</data>
-      <data key="d2">4415.457792207795</data>
-      <data key="d3">-75.79437229437212</data>
+      <data key="d2">4222.116668734018</data>
+      <data key="d3">-33.32709651264719</data>
       <data key="d4" />
     </node>
     <node id="30821981-f6f4-45e8-ac03-f6f4c67de722">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i \
   $ec \
   -n ec \
   -s \
   -o humann_ec_rename.tsv</data>
-      <data key="d2">5139.910173160176</data>
-      <data key="d3">272.70562770562844</data>
+      <data key="d2">4881.4246704594725</data>
+      <data key="d3">293.0157378222493</data>
       <data key="d4" />
     </node>
     <node id="2ec1e923-9d0c-4eac-9df9-392199f36d1a">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $ko \
   -n kegg-orthology \
   -s \
   -o humann_ko_rename_orthology.tsv</data>
-      <data key="d2">5045.338744588747</data>
-      <data key="d3">1219.5627705627708</data>
+      <data key="d2">4858.607637080543</data>
+      <data key="d3">1156.3385174180385</data>
       <data key="d4" />
     </node>
     <node id="79adcecb-7270-44cb-b374-e934aae2db28">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $ko \
   -n kegg-pathway \
   -s \
   -o humann_ko_rename_pathway.tsv</data>
-      <data key="d2">5031.529220779224</data>
-      <data key="d3">1389.3246753246758</data>
+      <data key="d2">4860.1974206528685</data>
+      <data key="d3">1276.4717595195275</data>
       <data key="d4" />
     </node>
     <node id="9b25e437-90c1-4629-a7aa-cab266763500">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $ko \
   -n kegg-module \
   -s \
   -o humann_ko_rename_module.tsv</data>
-      <data key="d2">5039.624458874462</data>
-      <data key="d3">1576.2294372294373</data>
+      <data key="d2">4864.019083898341</data>
+      <data key="d3">1393.7699685494724</data>
       <data key="d4" />
     </node>
     <node id="f088e56b-ace9-4459-9844-07d6e02af5fc">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD
+humann_rename_table \
   -i $pfam \
   -n pfam \
   -s \
   -o humann_pfam_rename.tsv</data>
-      <data key="d2">5117.767316017319</data>
-      <data key="d3">973.943722943724</data>
+      <data key="d2">4911.036208509116</data>
+      <data key="d3">828.7194697989917</data>
       <data key="d4" />
     </node>
     <node id="a064600e-2f40-4232-bcdd-5cceae6a58ff">
-      <data key="d1">humann_rename_table \
+      <data key="d1">$HUMANN_CMD \
+humann_rename_table \
   -i $go \
   -n infogo1000 \
   -s \
   -o humann_go_rename.tsv</data>
-      <data key="d2">5132.148268398271</data>
-      <data key="d3">743.3246753246763</data>
+      <data key="d2">4910.417160890068</data>
+      <data key="d3">696.1004221799437</data>
       <data key="d4" />
-    </node>
-    <node id="d4653fb4-f348-46ff-8e25-52212e43d36f">
-      <data key="d1">echo 'Databases downloaded'</data>
-      <data key="d2">2025.2220779220793</data>
-      <data key="d3">510.2008658008657</data>
-      <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; echo '\''Databases downloaded'\'''</data>
-      <data key="d6">Databases downloaded
-</data>
-      <data key="d7" />
-      <data key="d8">6269</data>
-      <data key="d9">0</data>
     </node>
     <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
       <data key="d1">for genome in ${reference_genomes}/*.fna; do
@@ -291,26 +301,25 @@ mv strainphlan_output/${sgb} .</data>
       <data key="d4" />
     </node>
     <node id="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
-      <data key="d1">mkdir -p db/kneaddata_db
+      <data key="d1">mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
+$KNEADDATA_CMD \
 kneaddata_database \
   --download $KNEADDATA_DB bowtie2 \
-  $KNEADDATA_DB_DIR| \
-tail -n 5</data>
-      <data key="d2">-121.91464646464448</data>
-      <data key="d3">474.0504329004334</data>
-      <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p db/kneaddata_db
+  $KNEADDATA_DB_DIR \
+| tail -n 5</data>
+      <data key="d2">-265.2908074607026</data>
+      <data key="d3">581.6677608231826</data>
+      <data key="d4">fail</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
+$KNEADDATA_CONTAINER_CMD \
 kneaddata_database \
-  --download $kneaddata_db bowtie2 \
-  db/kneaddata_db'</data>
-      <data key="d6">Download URL: https://huttenhower.sph.harvard.edu/kneadData_databases/Homo_sapiens_hg39_T2T_Bowtie2_v0.1.tar.gz
-Downloading file of size: 3.56 GB
-Extracting: /home/tpor598/biobakery-workforce/db/kneaddata_db/Homo_sapiens_hg39_T2T_Bowtie2_v0.1.tar.gz
-Database installed: /home/tpor598/biobakery-workforce/db/kneaddata_db
-</data>
+  --download $KNEADDATA_DB bowtie2 \
+  $KNEADDATA_DB_DIR \
+| tail -n 5'</data>
+      <data key="d6" />
       <data key="d7" />
-      <data key="d8">30146</data>
-      <data key="d9">0</data>
+      <data key="d8">2836055</data>
+      <data key="d9" />
     </node>
     <node id="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d1">mkdir -p work/logs/kneaddata
@@ -326,9 +335,9 @@ parallel \
       $KNEADDATA_DB_DIR \
       $OUTPUT/kneaddata \
   :::: $OUTPUT/ids.tsv</data>
-      <data key="d2">363.3176823176823</data>
-      <data key="d3">239.6996336996337</data>
-      <data key="d4">ran</data>
+      <data key="d2">206.6465501475837</data>
+      <data key="d3">390.0054561541206</data>
+      <data key="d4">fail</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
 parallel \
   --header : \
@@ -343,9 +352,14 @@ parallel \
       $OUTPUT/kneaddata \
   :::: $OUTPUT/ids.tsv'</data>
       <data key="d6" />
-      <data key="d7" />
-      <data key="d8">4549</data>
-      <data key="d9">0</data>
+      <data key="d7">ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
+ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
+ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
+ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
+ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
+</data>
+      <data key="d8">2802973</data>
+      <data key="d9">5</data>
     </node>
     <node id="7bd7d578-6bac-4670-990e-fcb742c1609d">
       <data key="d1">parallel \
@@ -353,35 +367,33 @@ parallel \
   --colsep '\t' \
   --joblog $OUTPUT/logs/metaphlan.log \
   --resume-failed \
-  $EXECUTOR code/metaphlan.sh {name} {db_path} {r1} {r2} $OUTPUT/metaphlan \
+  $EXECUTOR code/metaphlan.sh {name} {db_path} {r1} {r2} $OUTPUT/metaphlan_sgb \
   :::: $OUTPUT/ids.tsv</data>
-      <data key="d2">935.8066378066386</data>
-      <data key="d3">305.48051948051983</data>
+      <data key="d2">928.8970609068912</data>
+      <data key="d3">313.54169253022513</data>
       <data key="d4" />
     </node>
     <node id="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2">
-      <data key="d1">mkdir -p images
-singularity pull \
-  images/kneaddata.sif \
+      <data key="d1">apptainer pull \
+  $APPTAINER_CACHEDIR/kneaddata.sif \
   docker://biobakery/kneaddata:latest</data>
-      <data key="d2">-520.2958152958153</data>
-      <data key="d3">412.20346320346323</data>
+      <data key="d2">-669.5945850727476</data>
+      <data key="d3">506.74265468332055</data>
       <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p images
-singularity pull \
-  images/kneaddata.sif \
+      <data key="d5">bash -c '. env.sh &amp;&amp; apptainer pull \
+  $APPTAINER_CACHEDIR/kneaddata.sif \
   docker://biobakery/kneaddata:latest'</data>
       <data key="d6" />
       <data key="d7">INFO:    Using cached SIF image
 </data>
-      <data key="d8">41740</data>
+      <data key="d8">2829244</data>
       <data key="d9">0</data>
     </node>
     <node id="710e40ff-ff20-403f-8d02-c3adc1e0cc0e">
       <data key="d1">docker pull \
   biobakery/kneaddata:latest</data>
-      <data key="d2">-472.96248196248195</data>
-      <data key="d3">535.87012987013</data>
+      <data key="d2">-624.90026756096</data>
+      <data key="d3">708.260288085588</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; docker pull \
   biobakery/kneaddata:latest'</data>
@@ -430,8 +442,8 @@ $EXECUTOR \
     $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata</data>
-      <data key="d2">110.99999999999983</data>
-      <data key="d3">-10.857142857142776</data>
+      <data key="d2">-604.4328805561626</data>
+      <data key="d3">156.19583336060273</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001
 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
@@ -484,6 +496,40 @@ Final output files created:
       <data key="d8">42007</data>
       <data key="d9">0</data>
     </node>
+    <node id="7e146e2a-d5f4-4d12-a872-075728b23fd7">
+      <data key="d1">$METAPHLAN_CMD \
+metaphlan \
+  --install \
+  --db_dir $METAPHLAN_DB_DIR</data>
+      <data key="d2">589.2129215838332</data>
+      <data key="d3">274.0319229991578</data>
+      <data key="d4" />
+    </node>
+    <node id="e091cb85-c472-42d9-8134-94535922f261">
+      <data key="d1">merge_metaphlan_tables.py \
+  -i $OUTPUT/metaphlan_s/* \
+  -o $OUTPUT/metaphlan_merged.tsv</data>
+      <data key="d2">2396.112153726217</data>
+      <data key="d3">1039.8625191601425</data>
+      <data key="d4" />
+    </node>
+    <node id="a7873609-90c5-4961-88f1-5e33c032ee5f">
+      <data key="d1">merge_metaphlan_tables.py \
+  -i $OUTPUT/metaphlan/* \
+  --gtdb_profiles
+  -o $OUTPUT/metaphlan_merged.tsv</data>
+      <data key="d2">2398.9296101524933</data>
+      <data key="d3">1146.115991479954</data>
+      <data key="d4" />
+    </node>
+    <node id="695f0997-ed64-4818-8b84-e6072f644568">
+      <data key="d1">parallel -j 8 \
+  'sgb_to_gtdb_profile.py -i {} -o {.}_profile_gtdb.tsv' \
+  ::: "$OUTPUT"/metaphlan_sgb/*.tsv</data>
+      <data key="d2">1815.6771257546477</data>
+      <data key="d3">1077.6889172249496</data>
+      <data key="d4" />
+    </node>
     <edge source="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d10">6945afee-592c-432e-b9f8-8940312f875e</data>
       <data key="d11">blocking</data>
@@ -504,16 +550,16 @@ Final output files created:
       <data key="d10">6928d0f0-9feb-47bd-be8b-51f8ed223c3b</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="480594e1-53cb-429a-b497-f2d559fa6a14" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
-      <data key="d10">fbd13d9f-b275-4b72-afcd-87cc43dc89d6</data>
+    <edge source="480594e1-53cb-429a-b497-f2d559fa6a14" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d10">2046e797-d21c-4eab-8652-a85c168d1e54</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="06863a26-6154-4a93-80f1-e1e2a8eadb1e" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
-      <data key="d10">854f0a34-5c50-40d4-a277-56daec467e5c</data>
+    <edge source="06863a26-6154-4a93-80f1-e1e2a8eadb1e" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d10">8d2c8b43-afbc-4fa5-a702-35c3b68cd7bf</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
-      <data key="d10">37233e8e-a4d9-4df9-9f57-dc1de773ccc5</data>
+    <edge source="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d10">0b0b0ec9-3cd9-43a9-9b3d-17e9cc9de6a4</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
@@ -568,10 +614,6 @@ Final output files created:
       <data key="d10">8a015ce3-e2f8-4447-8413-f47ee656511d</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="d4653fb4-f348-46ff-8e25-52212e43d36f" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
-      <data key="d10">ac9e23f6-e66b-47d3-9609-cc81945dc18c</data>
-      <data key="d11">blocking</data>
-    </edge>
     <edge source="c0577b42-1729-439d-b34b-4cd2db421c23" target="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
       <data key="d10">d7ebfff1-3457-474f-acad-e06128c790f0</data>
       <data key="d11">blocking</data>
@@ -596,8 +638,24 @@ Final output files created:
       <data key="d10">2ee82f35-5750-45a8-ba90-30a51fa44b6d</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="d4653fb4-f348-46ff-8e25-52212e43d36f">
-      <data key="d10">6fb7e7e9-fb9b-4036-805e-c6cbb9f2975b</data>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0">
+      <data key="d10">45d3770c-e04b-44da-99ed-69d3880bddbd</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="06863a26-6154-4a93-80f1-e1e2a8eadb1e">
+      <data key="d10">12e91135-9c86-45d2-bd7b-719568c3d496</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="480594e1-53cb-429a-b497-f2d559fa6a14">
+      <data key="d10">3bfbde7b-430e-43a8-ac75-8f507b6d7c4f</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="e091cb85-c472-42d9-8134-94535922f261">
+      <data key="d10">3d4ca47b-5087-4d10-86d7-1c99851ba696</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="695f0997-ed64-4818-8b84-e6072f644568">
+      <data key="d10">918327be-1356-4455-b499-aac6db04a741</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
@@ -610,6 +668,14 @@ Final output files created:
     </edge>
     <edge source="e257bf77-3cee-4623-b292-c4be204b7150" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d10">a5a44aa7-6c10-47b5-b746-72838bf6ae71</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="7e146e2a-d5f4-4d12-a872-075728b23fd7" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
+      <data key="d10">98c6a629-c695-4ca6-a9ef-36fbbd2f8f1c</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="695f0997-ed64-4818-8b84-e6072f644568" target="a7873609-90c5-4961-88f1-5e33c032ee5f">
+      <data key="d10">1da6d275-859f-45f2-acfe-a74ccfe3c8f3</data>
       <data key="d11">blocking</data>
     </edge>
     <data key="d0">bash -c '. env.sh &amp;&amp; {}'</data>

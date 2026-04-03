@@ -123,12 +123,13 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
-      <data key="d1">humann_regroup_table \
+      <data key="d1">$HUMANN_CMD \
+humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_ko_uniref90.txt.gz \
   --output humann_ko.tsv</data>
-      <data key="d2">4247.8422691151745</data>
-      <data key="d3">1115.6683875479089</data>
+      <data key="d2">4227.380095467285</data>
+      <data key="d3">1112.636954414888</data>
       <data key="d4" />
     </node>
     <node id="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
@@ -252,6 +253,7 @@ humann_rename_table \
     </node>
     <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
       <data key="d1">for genome in ${reference_genomes}/*.fna; do
+  $METAPHLAN_CMD \
   extract_markers.py \
     --input \$genome \
     --output_dir . \
@@ -262,7 +264,8 @@ done</data>
       <data key="d4" />
     </node>
     <node id="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
-      <data key="d1">sample2markers.py \
+      <data key="d1">$METAPHLAN_CMD \
+sample2markers.py \
   --input ${samout} \
   --nprocs ${task.cpus} \
   --output_dir .</data>
@@ -272,6 +275,8 @@ done</data>
     </node>
     <node id="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
       <data key="d1">mkdir -p strainphlan_output
+
+$METAPHLAN_CMD \
 strainphlan \
   --samples ${markers}/*.pkl \
   --output_dir strainphlan_output \
@@ -285,12 +290,13 @@ strainphlan \
     
 # Move output to expected location
 mv strainphlan_output/${sgb} .</data>
-      <data key="d2">2166.4093073593094</data>
+      <data key="d2">2168.6828822090747</data>
       <data key="d3">-272.8640692640694</data>
       <data key="d4" />
     </node>
     <node id="84eae342-95b5-47af-b801-02da156c908c">
-      <data key="d1">strain_transmission.py \
+      <data key="d1">$METAPHLAN_CMD \
+strain_transmission.py \
   --tree ${tree} \
   --metadata ${metadata} \
   --threshold ${params.strain_threshold} \

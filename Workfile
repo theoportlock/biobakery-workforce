@@ -17,8 +17,8 @@
       <data key="d1">create_sample_table.py \
   $INPUT \
   -o $OUTPUT/ids.tsv</data>
-      <data key="d2">-256.5595727438293</data>
-      <data key="d3">398.2033807877912</data>
+      <data key="d2">-289.90533720705804</data>
+      <data key="d3">413.3605464528952</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
   $INPUT \
@@ -26,7 +26,7 @@
       <data key="d6">Success! Created work/ids.tsv with 5 pairs.
 </data>
       <data key="d7" />
-      <data key="d8">2771032</data>
+      <data key="d8">1670671</data>
       <data key="d9">0</data>
     </node>
     <node id="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
@@ -315,17 +315,17 @@ kneaddata_database \
 | tail -n 5</data>
       <data key="d2">-265.2908074607026</data>
       <data key="d3">581.6677608231826</data>
-      <data key="d4">fail</data>
+      <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
-$KNEADDATA_CONTAINER_CMD \
+$KNEADDATA_CMD \
 kneaddata_database \
   --download $KNEADDATA_DB bowtie2 \
   $KNEADDATA_DB_DIR \
 | tail -n 5'</data>
       <data key="d6" />
       <data key="d7" />
-      <data key="d8">2836055</data>
-      <data key="d9" />
+      <data key="d8">1625004</data>
+      <data key="d9">0</data>
     </node>
     <node id="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d1">mkdir -p work/logs/kneaddata
@@ -341,8 +341,8 @@ parallel \
       $KNEADDATA_DB_DIR \
       $OUTPUT/kneaddata \
   :::: $OUTPUT/ids.tsv</data>
-      <data key="d2">206.6465501475837</data>
-      <data key="d3">390.0054561541206</data>
+      <data key="d2">221.1611371660855</data>
+      <data key="d3">372.027914568742</data>
       <data key="d4">fail</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
 parallel \
@@ -448,8 +448,8 @@ $EXECUTOR \
     $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata</data>
-      <data key="d2">-604.4328805561626</data>
-      <data key="d3">156.19583336060273</data>
+      <data key="d2">-600.4328805561627</data>
+      <data key="d3">164.19583336060276</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001
 read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
@@ -507,8 +507,8 @@ Final output files created:
 metaphlan \
   --install \
   --db_dir $METAPHLAN_DB_DIR</data>
-      <data key="d2">589.2129215838332</data>
-      <data key="d3">274.0319229991578</data>
+      <data key="d2">594.43622496361</data>
+      <data key="d3">249.65650722686644</data>
       <data key="d4" />
     </node>
     <node id="e091cb85-c472-42d9-8134-94535922f261">

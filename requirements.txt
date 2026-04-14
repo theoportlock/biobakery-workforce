@@ -1,3 +1,3 @@
-workforce
+workforce @ git+https://github.com/theoportlock/workforce.git@develop
 pandas
 kneaddata

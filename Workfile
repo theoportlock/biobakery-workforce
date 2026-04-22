@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d12" for="edge" attr.name="status" attr.type="string" />
   <key id="d11" for="edge" attr.name="edge_type" attr.type="string" />
   <key id="d10" for="edge" attr.name="id" attr.type="string" />
   <key id="d9" for="node" attr.name="error_code" attr.type="string" />
@@ -15,58 +16,124 @@
   <graph edgedefault="directed">
     <node id="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875">
       <data key="d1">create_sample_table.py \
-  $INPUT \
+  "$INPUT" \
   -o $OUTPUT/ids.tsv</data>
-      <data key="d2">-664.2873291351264</data>
-      <data key="d3">499.75639074398794</data>
+      <data key="d2">-651.7987226422832</data>
+      <data key="d3">428.20299750354144</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
-  $INPUT \
+  "$INPUT" \
   -o $OUTPUT/ids.tsv'</data>
-      <data key="d6">Success! Created work/ids.tsv with 5 pairs.
+      <data key="d6">Success! Created /nesi/nobackup/uoa03941/biobakery-workforce/work/ids.tsv with 5 pairs.
 </data>
       <data key="d7" />
-      <data key="d8">1670671</data>
+      <data key="d8">3575893</data>
       <data key="d9">0</data>
     </node>
     <node id="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
-      <data key="d1">parallel \
-  --header : \
-  --colsep '\t' \
-  --joblog $OUTPUT/logs/humann.log \
-  --resume \
-  --jobs 4 \
-  "sbatch --wait code/humann.sh {name} {input_path} {output_dir}" \
-  :::: $SAMPLE_TABLE</data>
-      <data key="d2">2586.361445060247</data>
-      <data key="d3">413.47023139493183</data>
-      <data key="d4" />
+      <data key="d1">mkdir -p "$OUTPUT/humann" "$OUTPUT/logs/humann" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/knead_ids.tsv humann \
+$EXECUTOR $HUMANN_RES \
+$HUMANN_ENV \
+  humann \
+    --input {read} \
+    --taxonomic-profile "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
+    --threads 4 \
+    --remove-temp-output \
+    --nucleotide-database /humann_db/chocophlan \
+    --protein-database /humann_db/uniref \
+    --output-basename "{name}" \
+    --output "$OUTPUT/humann"</data>
+      <data key="d2">2383.4291231780066</data>
+      <data key="d3">374.7184561019776</data>
+      <data key="d4">fail</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$OUTPUT/humann" "$OUTPUT/logs/humann" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/knead_ids.tsv humann \
+$EXECUTOR $HUMANN_RES \
+$HUMANN_ENV \
+  humann \
+    --input {read} \
+    --taxonomic-profile "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
+    --threads 4 \
+    --remove-temp-output \
+    --nucleotide-database /humann_db/chocophlan \
+    --protein-database /humann_db/uniref \
+    --output-basename "{name}" \
+    --output "$OUTPUT/humann"'</data>
+      <data key="d6" />
+      <data key="d7">srun: job 5645213 queued and waiting for resources
+srun: job 5645213 has been allocated resources
+srun: error: g10: task 0: Exited with exit code 255
+srun: Terminating StepId=5645213.0
+srun: job 5645214 queued and waiting for resources
+srun: job 5645214 has been allocated resources
+srun: error: g10: task 0: Exited with exit code 255
+srun: Terminating StepId=5645214.0
+srun: job 5645216 queued and waiting for resources
+srun: job 5645216 has been allocated resources
+srun: error: g10: task 0: Exited with exit code 255
+srun: Terminating StepId=5645216.0
+srun: job 5645215 queued and waiting for resources
+srun: job 5645215 has been allocated resources
+srun: error: g10: task 0: Exited with exit code 255
+srun: Terminating StepId=5645215.0
+srun: job 5645274 queued and waiting for resources
+srun: job 5645274 has been allocated resources
+srun: error: g10: task 0: Exited with exit code 255
+srun: Terminating StepId=5645274.0
+</data>
+      <data key="d8">3971610</data>
+      <data key="d9">5</data>
     </node>
     <node id="480594e1-53cb-429a-b497-f2d559fa6a14">
       <data key="d1">mkdir -p "$HUMANN_DB_DIR" &amp;&amp; \
-$HUMANN_CMD \
-humann_databases \
-  --update-config no \
-  --download chocophlan full \
-  $HUMANN_DB_DIR \
-&amp;&amp; \
-$HUMANN_CMD \
-humann_databases \
-  --update-config no \
-  --download uniref uniref90_diamond \
-  $HUMANN_DB_DIR \
-&amp;&amp; \
-$HUMANN_CMD \
-humann_databases \
-  --update-config no \
-  --download utility_mapping full \
-  $HUMANN_DB_DIR</data>
-      <data key="d2">1645.2042581128283</data>
-      <data key="d3">243.00828095223676</data>
-      <data key="d4" />
+[ -z "$(ls -A "$HUMANN_DB_DIR")" ] &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download chocophlan full \
+    $HUMANN_DB_DIR \
+  &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download uniref uniref90_diamond \
+    $HUMANN_DB_DIR \
+  &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download utility_mapping full \
+    $HUMANN_DB_DIR</data>
+      <data key="d2">1897.5576755250618</data>
+      <data key="d3">60.5958423603613</data>
+      <data key="d4">fail</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$HUMANN_DB_DIR" &amp;&amp; \
+[ -z "$(ls -A "$HUMANN_DB_DIR")" ] &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download chocophlan full \
+    $HUMANN_DB_DIR \
+  &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download uniref uniref90_diamond \
+    $HUMANN_DB_DIR \
+  &amp;&amp; \
+  $HUMANN_ENV \
+  humann_databases \
+    --update-config no \
+    --download utility_mapping full \
+    $HUMANN_DB_DIR'</data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">3992742</data>
+      <data key="d9">1</data>
     </node>
     <node id="b0eb77b6-30d5-4193-9da4-50eba027ffef">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_join_tables \
   -i .\
   --file_name genefamilies \
@@ -76,7 +143,7 @@ humann_join_tables \
       <data key="d4" />
     </node>
     <node id="9be649f6-ee46-4abf-a761-ade91560b98f">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_join_tables \
   -i . \
   --file_name pathabundance \
@@ -86,7 +153,7 @@ humann_join_tables \
       <data key="d4" />
     </node>
     <node id="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_renorm_table \
   -i $genefamilies \
   -u "cpm" \
@@ -96,17 +163,17 @@ humann_renorm_table \
       <data key="d4" />
     </node>
     <node id="8421a989-bfd1-4793-a41c-5a979c615dd1">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_renorm_table \
   -i $pathabundance \
   -u "cpm" \
   -o humann_pathabundance_cpm.tsv</data>
-      <data key="d2">3571.3976850103754</data>
-      <data key="d3">169.65396217935967</data>
+      <data key="d2">3574.8798872635602</data>
+      <data key="d3">167.91286105276737</data>
       <data key="d4" />
     </node>
     <node id="04916e36-0405-4c18-9a08-741b32a0cb45">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_level4ec_uniref90.txt.gz \
@@ -116,7 +183,7 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_ko_uniref90.txt.gz \
@@ -126,7 +193,7 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_pfam_uniref90.txt.gz \
@@ -136,7 +203,7 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="905a7093-da32-4ae5-9a57-2a1dac112741">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_go_uniref90.txt.gz \
@@ -146,7 +213,7 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="e777cea5-e06e-4d96-a6ac-2a3f6197bb8e">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
   --input $genefamilies \
   -c ${humann_db}/utility_mapping/map_eggnog_uniref90.txt.gz \
@@ -156,7 +223,7 @@ humann_regroup_table \
       <data key="d4" />
     </node>
     <node id="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $genefamilies \
   -n metacyc-rxn \
@@ -167,7 +234,7 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="7bcbe8c7-4d1e-49e6-9768-4f204c9601d6">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $pathabundance \
   -n metacyc-pwy \
@@ -178,7 +245,7 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="30821981-f6f4-45e8-ac03-f6f4c67de722">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i \
   $ec \
@@ -190,7 +257,7 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="2ec1e923-9d0c-4eac-9df9-392199f36d1a">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $ko \
   -n kegg-orthology \
@@ -201,18 +268,18 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="79adcecb-7270-44cb-b374-e934aae2db28">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $ko \
   -n kegg-pathway \
   -s \
   -o humann_ko_rename_pathway.tsv</data>
-      <data key="d2">4860.1974206528685</data>
+      <data key="d2">4858.681704086358</data>
       <data key="d3">1276.4717595195275</data>
       <data key="d4" />
     </node>
     <node id="9b25e437-90c1-4629-a7aa-cab266763500">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $ko \
   -n kegg-module \
@@ -223,7 +290,7 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="f088e56b-ace9-4459-9844-07d6e02af5fc">
-      <data key="d1">$HUMANN_CMD
+      <data key="d1">$HUMANN_ENV
 humann_rename_table \
   -i $pfam \
   -n pfam \
@@ -234,7 +301,7 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="a064600e-2f40-4232-bcdd-5cceae6a58ff">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
   -i $go \
   -n infogo1000 \
@@ -247,14 +314,14 @@ humann_rename_table \
     <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
       <data key="d1">[ -d $REFERENCE_GENOMES ] &amp;&amp; \
 for genome in $REFERENCE_GENOMES/*.fna; do
-  $METAPHLAN_CMD \
+  $METAPHLAN_ENV \
   extract_markers.py \
     --input \$genome \
     --output_dir . \
     --nprocs ${task.cpus}
 done</data>
-      <data key="d2">1671.1593073593092</data>
-      <data key="d3">-311.36406926406966</data>
+      <data key="d2">1772.244762599048</data>
+      <data key="d3">-278.05181696915565</data>
       <data key="d4" />
     </node>
     <node id="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
@@ -290,12 +357,12 @@ parallel \
   $OUTPUT/strainphlan/markers \
   $OUTPUT/strainphlan \
 :::: clades.tsv</data>
-      <data key="d2">2209.6828822090747</data>
-      <data key="d3">-210.86406926406957</data>
+      <data key="d2">2250.6072295048552</data>
+      <data key="d3">-209.34835269755916</data>
       <data key="d4" />
     </node>
     <node id="84eae342-95b5-47af-b801-02da156c908c">
-      <data key="d1">$METAPHLAN_CMD \
+      <data key="d1">$METAPHLAN_ENV \
 strain_transmission.py \
   --tree ${tree} \
   --metadata ${metadata} \
@@ -308,171 +375,124 @@ strain_transmission.py \
     </node>
     <node id="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
       <data key="d1">mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
-$KNEADDATA_CMD \
-kneaddata_database \
-  --download $KNEADDATA_DB bowtie2 \
-  $KNEADDATA_DB_DIR \
-| tail -n 5</data>
-      <data key="d2">-639.672799388771</data>
-      <data key="d3">668.0636051142753</data>
+[ -z "$(ls -A "$KNEADDATA_DB_DIR")" ] &amp;&amp; \
+$KNEADDATA_CMD kneaddata_database \
+  --download "$KNEADDATA_DB" bowtie2 \
+  "$KNEADDATA_DB_DIR" | tail -n 5 || \
+echo "Folder $KNEADDATA_DB_DIR already exists. Skipping download."</data>
+      <data key="d2">-978.3136423326315</data>
+      <data key="d3">672.5102118738289</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
-$KNEADDATA_CMD \
-kneaddata_database \
-  --download $KNEADDATA_DB bowtie2 \
-  $KNEADDATA_DB_DIR \
-| tail -n 5'</data>
-      <data key="d6" />
+[ -z "$(ls -A "$KNEADDATA_DB_DIR")" ] &amp;&amp; \
+$KNEADDATA_CMD kneaddata_database \
+  --download "$KNEADDATA_DB" bowtie2 \
+  "$KNEADDATA_DB_DIR" | tail -n 5 || \
+echo "Folder $KNEADDATA_DB_DIR already exists. Skipping download."'</data>
+      <data key="d6">Folder /nesi/nobackup/uoa03941/genomes already exists. Skipping download.
+</data>
       <data key="d7" />
-      <data key="d8">1625004</data>
+      <data key="d8">3817441</data>
       <data key="d9">0</data>
     </node>
     <node id="11ea34fd-c241-4e39-9605-b8c3091b1a64">
-      <data key="d1">mkdir -p $OUTPUT/logs/kneaddata
-parallel \
-  --header : \
-  --colsep '\t' \
-  --joblog $OUTPUT/logs/kneaddata.log \
-  --resume-failed \
-  --jobs 2 \
-  $EXECUTOR \
-  kneaddata.sh \
-  {sample_id} {read1} {read2} \
-  $KNEADDATA_DB_DIR \
-  $OUTPUT/kneaddata \
-:::: $OUTPUT/ids.tsv</data>
-      <data key="d2">-190.4178859955502</data>
-      <data key="d3">435.4006504480343</data>
+      <data key="d1">mkdir -p "$OUTPUT/kneaddata" "$OUTPUT/logs/kneaddata" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/ids.tsv kneaddata \
+$EXECUTOR $KNEADDATA_RES \
+$KNEADDATA_ENV \
+  kneaddata \
+    --input "{read1}" \
+    --input "{read2}" \
+    --threads 4 \
+    --reference-db /kneaddata_db \
+    --output "$OUTPUT/kneaddata" \
+    --output-prefix "{sample_id}" \
+    --cat-final-output</data>
+      <data key="d2">-333.9292795027068</data>
+      <data key="d3">446.84725720758775</data>
       <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
-parallel \
-  --header : \
-  --colsep '\''\t'\'' \
-  --joblog $OUTPUT/logs/kneaddata.log \
-  --resume-failed \
-  --jobs 2 \
-  $EXECUTOR \
-    code/kneaddata.sh \
-      {sample_id} {read1} {read2} \
-      $KNEADDATA_DB_DIR \
-      $OUTPUT/kneaddata \
-  :::: $OUTPUT/ids.tsv'</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$OUTPUT/kneaddata" "$OUTPUT/logs/kneaddata" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/ids.tsv kneaddata \
+$EXECUTOR $KNEADDATA_RES \
+$KNEADDATA_ENV \
+  kneaddata \
+    --input "{read1}" \
+    --input "{read2}" \
+    --threads 4 \
+    --reference-db /kneaddata_db \
+    --output "$OUTPUT/kneaddata" \
+    --output-prefix "{sample_id}" \
+    --cat-final-output'</data>
       <data key="d6" />
-      <data key="d7" />
-      <data key="d8">1975757</data>
+      <data key="d7">srun: job 5643421 queued and waiting for resources
+srun: job 5643421 has been allocated resources
+srun: job 5643422 queued and waiting for resources
+srun: job 5643422 has been allocated resources
+srun: job 5643423 queued and waiting for resources
+srun: job 5643423 has been allocated resources
+srun: job 5643424 queued and waiting for resources
+srun: job 5643424 has been allocated resources
+srun: job 5643457 queued and waiting for resources
+srun: job 5643457 has been allocated resources
+</data>
+      <data key="d8">3583657</data>
       <data key="d9">0</data>
     </node>
     <node id="7bd7d578-6bac-4670-990e-fcb742c1609d">
-      <data key="d1">parallel \
-  --header : \
-  --colsep '\t' \
-  --joblog $OUTPUT/logs/metaphlan.log \
-  --resume-failed \
-  --jobs 5 \
-  $EXECUTOR \
-  metaphlan.sh \
-  {sample_id} {read1} {read2} \
-  $METAPHLAN_DB_DIR \
-  $OUTPUT/metaphlan_sgb \
-:::: $OUTPUT/knead_ids.tsv</data>
-      <data key="d2">838.1344177640123</data>
-      <data key="d3">283.9429733781569</data>
+      <data key="d1">mkdir -p "$OUTPUT/metaphlan" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/knead_ids.tsv metaphlan \
+$EXECUTOR $METAPHLAN_RES \
+$METAPHLAN_ENV \
+  metaphlan \
+    "{read}" \
+    --input_type fastq \
+    --nproc 8 \
+    --db_dir /metaphlan_db \
+    --index "$METAPHLAN_DB" \
+    --mapout "$OUTPUT/metaphlan/{sample_id}_map.bz2" \
+    -o "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
+    --force</data>
+      <data key="d2">839.0049683273083</data>
+      <data key="d3">283.18511509490173</data>
       <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; parallel \
-  --header : \
-  --colsep '\''\t'\'' \
-  --joblog $OUTPUT/logs/metaphlan.log \
-  --resume-failed \
-  --jobs 5 \
-  $EXECUTOR \
-  metaphlan.sh \
-  {sample_id} {read1} {read2} \
-  $METAPHLAN_DB_DIR \
-  $OUTPUT/metaphlan_sgb \
-:::: $OUTPUT/knead_ids.tsv'</data>
-      <data key="d6">Submitted batch job 5542140
-Submitted batch job 5542142
-Submitted batch job 5542139
-Submitted batch job 5542141
-Submitted batch job 5542143
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$OUTPUT/metaphlan" &amp;&amp; \
+PARALLEL_CMD $OUTPUT/knead_ids.tsv metaphlan \
+$EXECUTOR $METAPHLAN_RES \
+$METAPHLAN_ENV \
+  metaphlan \
+    "{read}" \
+    --input_type fastq \
+    --nproc 8 \
+    --db_dir /metaphlan_db \
+    --index "$METAPHLAN_DB" \
+    --mapout "$OUTPUT/metaphlan/{sample_id}_map.bz2" \
+    -o "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
+    --force'</data>
+      <data key="d6" />
+      <data key="d7">srun: job 5644356 queued and waiting for resources
+srun: job 5644356 has been allocated resources
+srun: job 5644358 queued and waiting for resources
+srun: job 5644358 has been allocated resources
+srun: job 5644359 queued and waiting for resources
+srun: job 5644359 has been allocated resources
+srun: job 5644357 queued and waiting for resources
+srun: job 5644357 has been allocated resources
+srun: job 5644511 queued and waiting for resources
+srun: job 5644511 has been allocated resources
 </data>
-      <data key="d7" />
-      <data key="d8">1024776</data>
-      <data key="d9">0</data>
-    </node>
-    <node id="e257bf77-3cee-4623-b292-c4be204b7150">
-      <data key="d1">sample_id=FG00004_S26_L004_R_001
-read1=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
-$EXECUTOR \
-  code/kneaddata.sh \
-    $sample_id $read1 $read2 \
-    $KNEADDATA_DB_DIR \
-    $OUTPUT/kneaddata</data>
-      <data key="d2">-973.944321920935</data>
-      <data key="d3">251.46222821499157</data>
-      <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001
-read1=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
-$EXECUTOR \
-  code/kneaddata.sh \
-    $sample_id $read1 $read2 \
-    $KNEADDATA_DB_DIR \
-    $OUTPUT/kneaddata'</data>
-      <data key="d6">[kneaddata] Executing for FG00004_S26_L004_R_001 using identity mounts...
-Decompressing gzipped file ...
-
-Decompressing gzipped file ...
-
-Reformatting file sequence identifiers ...
-
-Reformatting file sequence identifiers ...
-
-Initial number of reads ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiers_iah_r9j_decompressed_0i6y4q0d_FG00004_S26_L004_R2_001 ): 250.0
-Initial number of reads ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersuk2qdzn7_decompressed_xmfg80ki_FG00004_S26_L004_R1_001 ): 250.0
-Running Trimmomatic ... 
-Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.1.fastq ): 196.0
-Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.2.fastq ): 196.0
-Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.1.fastq ): 13.0
-Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.2.fastq ): 5.0
-Running trf ... 
-Running trf ... 
-Running trf ... 
-Running trf ... 
-Decontaminating ...
-Running bowtie2 ... 
-Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 194.0
-Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 194.0
-Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq ): 194.0
-Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq ): 194.0
-Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 13.0
-Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq ): 13.0
-Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
-Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq ): 5.0
-
-Final output files created: 
-/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq
-/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq
-/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq
-/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq
-
-[kneaddata] DONE FG00004_S26_L004_R_001
-</data>
-      <data key="d7">INFO:    Using cached SIF image
-WARNING: While bind mounting '/nesi/nobackup/uoa03941/biobakery-workforce/testdata:/nesi/nobackup/uoa03941/biobakery-workforce/testdata': destination is already in the mount point list
-</data>
-      <data key="d8">1908194</data>
+      <data key="d8">3791218</data>
       <data key="d9">0</data>
     </node>
     <node id="7e146e2a-d5f4-4d12-a872-075728b23fd7">
       <data key="d1">mkdir -p "$METAPHLAN_DB_DIR" &amp;&amp; \
-$METAPHLAN_CMD \
+[ -z "$(ls -A "$KNEADDATA_DB_DIR")" ] &amp;&amp; \
+$EXECUTOR \
+$METAPHLAN_ENV \
 metaphlan \
   --install \
   --db_dir $METAPHLAN_DB_DIR</data>
-      <data key="d2">378.5629013921937</data>
-      <data key="d3">198.14116678754377</data>
+      <data key="d2">406.13166191212247</data>
+      <data key="d3">-1.7323469819403385</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$METAPHLAN_DB_DIR" &amp;&amp; \
 $METAPHLAN_CMD \
@@ -487,44 +507,93 @@ Wed Apr 15 23:34:33 2026: The database is installed (mpa_vJan25_CHOCOPhlAnSGB_20
       <data key="d9">0</data>
     </node>
     <node id="e091cb85-c472-42d9-8134-94535922f261">
-      <data key="d1">merge_metaphlan_tables.py \
-  -i $OUTPUT/metaphlan_s/* \
-  -o $OUTPUT/metaphlan_merged.tsv</data>
-      <data key="d2">2396.112153726217</data>
-      <data key="d3">1039.8625191601425</data>
-      <data key="d4" />
-    </node>
-    <node id="a7873609-90c5-4961-88f1-5e33c032ee5f">
-      <data key="d1">merge_metaphlan_tables.py \
-  -i $OUTPUT/metaphlan/* \
-  --gtdb_profiles
-  -o $OUTPUT/metaphlan_merged.tsv</data>
-      <data key="d2">2398.9296101524933</data>
-      <data key="d3">1146.115991479954</data>
-      <data key="d4" />
-    </node>
-    <node id="695f0997-ed64-4818-8b84-e6072f644568">
-      <data key="d1">parallel -j 8 \
-  'sgb_to_gtdb_profile.py -i {} -o {.}_profile_gtdb.tsv' \
-  ::: "$OUTPUT"/metaphlan_sgb/*.tsv</data>
-      <data key="d2">1815.6771257546477</data>
-      <data key="d3">1077.6889172249496</data>
-      <data key="d4" />
-    </node>
-    <node id="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97">
-      <data key="d1">create_sample_table.py \
-   "work/kneaddata/*/*paired_{1,2}.fastq"\
-  -o $OUTPUT/knead_ids.tsv</data>
-      <data key="d2">380.773079265542</data>
-      <data key="d3">123.87620092107596</data>
+      <data key="d1">$METAPHLAN_ENV \
+merge_metaphlan_tables.py \
+  $OUTPUT/metaphlan/*profile.txt \
+  --overwrite \
+  -o $OUTPUT/metaphlan_sgb_merged.tsv</data>
+      <data key="d2">1489.3315915551818</data>
+      <data key="d3">661.8554374363176</data>
       <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
-   "work/kneaddata/*/*paired_{1,2}.fastq"\
-  -o $OUTPUT/knead_ids.tsv'</data>
-      <data key="d6">Success! Created work/knead_ids.tsv with 5 pairs.
+      <data key="d5">bash -c '. env.sh &amp;&amp; $METAPHLAN_ENV \
+merge_metaphlan_tables.py \
+  $OUTPUT/metaphlan/*profile.txt \
+  --overwrite \
+  -o $OUTPUT/metaphlan_sgb_merged.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
 </data>
+      <data key="d8">3926651</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="97e98c84-4958-4e9a-9f75-9fc031c519cb">
+      <data key="d1">du $INPUT &gt; \
+  $OUTPUT/filesizes.txt</data>
+      <data key="d2">-644.3167158985897</data>
+      <data key="d3">514.2312570757359</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; du $INPUT &gt; \
+  $OUTPUT/filesizes.txt'</data>
+      <data key="d6" />
       <data key="d7" />
-      <data key="d8">689758</data>
+      <data key="d8">3575887</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="ad61e501-9c2a-40c8-9554-bc24e16ba2c9">
+      <data key="d1">$EXECUTOR \
+$KNEADDATA_ENV \
+kneaddata_read_count_table \
+  --input "$OUTPUT/kneaddata" \
+  --output "$OUTPUT/kneaddata_summary.tsv"</data>
+      <data key="d2">416.6048171998412</data>
+      <data key="d3">795.4424098021271</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $EXECUTOR \
+$KNEADDATA_ENV \
+kneaddata_read_count_table \
+  --input "$OUTPUT/kneaddata" \
+  --output "$OUTPUT/kneaddata_summary.tsv"'</data>
+      <data key="d6">Reading log: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L003_R_001.log
+Reading log: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L001_R_001.log
+Reading log: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L002_R_001.log
+Reading log: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001.log
+Reading log: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00005_S50_L001_R_001.log
+Read count table written: /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata_summary.tsv
+</data>
+      <data key="d7">srun: job 5643548 queued and waiting for resources
+srun: job 5643548 has been allocated resources
+INFO:    Using cached SIF image
+</data>
+      <data key="d8">3614969</data>
+      <data key="d9">0</data>
+    </node>
+    <node id="bdea2403-f8c2-443e-af89-24c27e6df8a9">
+      <data key="d1">{ printf "sample_id\tread\n"
+  find work/kneaddata -maxdepth 1 -type f -name "*.fastq" \
+    ! -name "*_paired_*" \
+    ! -name "*trimmed*" \
+    ! -name "*unmatched*" \
+    ! -name "*contam*" \
+    ! -name "*repeats*" \
+    | sort \
+    | awk -F'/' '{id=$NF; sub(/\.fastq$/, "", id); print id "\t" $0}'
+} &gt; $OUTPUT/knead_ids.tsv</data>
+      <data key="d2">211.96973382532082</data>
+      <data key="d3">208.41001682423797</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; { printf "sample_id\tread\n"
+  find work/kneaddata -maxdepth 1 -type f -name "*.fastq" \
+    ! -name "*_paired_*" \
+    ! -name "*trimmed*" \
+    ! -name "*unmatched*" \
+    ! -name "*contam*" \
+    ! -name "*repeats*" \
+    | sort \
+    | awk -F'\''/'\'' '\''{id=$NF; sub(/\.fastq$/, "", id); print id "\t" $0}'\''
+} &gt; $OUTPUT/knead_ids.tsv'</data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">3784993</data>
       <data key="d9">0</data>
     </node>
     <edge source="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
@@ -623,40 +692,37 @@ Wed Apr 15 23:34:33 2026: The database is installed (mpa_vJan25_CHOCOPhlAnSGB_20
       <data key="d10">b8542fa8-1b28-4986-817f-01010459ba15</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="11ea34fd-c241-4e39-9605-b8c3091b1a64" target="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97">
-      <data key="d10">c9fc2a2a-c2cf-440c-841b-a5ba565620b1</data>
+    <edge source="11ea34fd-c241-4e39-9605-b8c3091b1a64" target="ad61e501-9c2a-40c8-9554-bc24e16ba2c9">
+      <data key="d10">1f3ad818-3142-45af-996c-c49ed9aea326</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="11ea34fd-c241-4e39-9605-b8c3091b1a64" target="bdea2403-f8c2-443e-af89-24c27e6df8a9">
+      <data key="d10">605e1b5e-be9f-4be7-a51d-98c751051a17</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
       <data key="d10">2ee82f35-5750-45a8-ba90-30a51fa44b6d</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="480594e1-53cb-429a-b497-f2d559fa6a14">
-      <data key="d10">3bfbde7b-430e-43a8-ac75-8f507b6d7c4f</data>
-      <data key="d11">blocking</data>
-    </edge>
     <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="e091cb85-c472-42d9-8134-94535922f261">
       <data key="d10">3d4ca47b-5087-4d10-86d7-1c99851ba696</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="695f0997-ed64-4818-8b84-e6072f644568">
-      <data key="d10">918327be-1356-4455-b499-aac6db04a741</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="e257bf77-3cee-4623-b292-c4be204b7150" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
-      <data key="d10">a5a44aa7-6c10-47b5-b746-72838bf6ae71</data>
+    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
+      <data key="d10">f5529b9c-957b-417f-b89c-54a6973e03a7</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="7e146e2a-d5f4-4d12-a872-075728b23fd7" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
       <data key="d10">98c6a629-c695-4ca6-a9ef-36fbbd2f8f1c</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="695f0997-ed64-4818-8b84-e6072f644568" target="a7873609-90c5-4961-88f1-5e33c032ee5f">
-      <data key="d10">1da6d275-859f-45f2-acfe-a74ccfe3c8f3</data>
+    <edge source="97e98c84-4958-4e9a-9f75-9fc031c519cb" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
+      <data key="d10">60762ade-6551-4b3d-a354-36fa5c053b61</data>
       <data key="d11">blocking</data>
+      <data key="d12">to_run</data>
     </edge>
-    <edge source="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
-      <data key="d10">e0289167-94d3-4f1c-978d-bcbe6ed0b6dc</data>
+    <edge source="bdea2403-f8c2-443e-af89-24c27e6df8a9" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
+      <data key="d10">48cf45a1-f186-4a7e-a54c-069132f0f34a</data>
       <data key="d11">blocking</data>
     </edge>
     <data key="d0">bash -c '. env.sh &amp;&amp; {}'</data>

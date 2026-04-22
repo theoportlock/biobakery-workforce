@@ -40,13 +40,13 @@ $HUMANN_ENV \
     --taxonomic-profile "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
     --threads 4 \
     --remove-temp-output \
-    --nucleotide-database /humann_db/chocophlan \
-    --protein-database /humann_db/uniref \
+    --nucleotide-database $HUMANN_DB_DIR/chocophlan \
+    --protein-database $HUMANN_DB_DIR/uniref \
     --output-basename "{sample_id}" \
     --output "$OUTPUT/humann"</data>
       <data key="d2">2173.6538015552987</data>
       <data key="d3">443.67133209425344</data>
-      <data key="d4">fail</data>
+      <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$OUTPUT/humann" "$OUTPUT/logs/humann" &amp;&amp; \
 PARALLEL_CMD $OUTPUT/knead_ids.tsv humann \
 $EXECUTOR $HUMANN_RES \
@@ -56,34 +56,24 @@ $HUMANN_ENV \
     --taxonomic-profile "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
     --threads 4 \
     --remove-temp-output \
-    --nucleotide-database /humann_db/chocophlan \
-    --protein-database /humann_db/uniref \
-    --output-basename "{name}" \
+    --nucleotide-database $HUMANN_DB_DIR/chocophlan \
+    --protein-database $HUMANN_DB_DIR/uniref \
+    --output-basename "{sample_id}" \
     --output "$OUTPUT/humann"'</data>
       <data key="d6" />
-      <data key="d7">srun: job 5647307 queued and waiting for resources
-srun: job 5647307 has been allocated resources
-srun: error: l03: task 0: Exited with exit code 1
-srun: Terminating StepId=5647307.0
-srun: job 5647308 queued and waiting for resources
-srun: job 5647308 has been allocated resources
-srun: error: l03: task 0: Exited with exit code 1
-srun: Terminating StepId=5647308.0
-srun: job 5647306 queued and waiting for resources
-srun: job 5647306 has been allocated resources
-srun: error: l03: task 0: Exited with exit code 1
-srun: Terminating StepId=5647306.0
-srun: job 5647305 queued and waiting for resources
-srun: job 5647305 has been allocated resources
-srun: error: l03: task 0: Exited with exit code 1
-srun: Terminating StepId=5647305.0
-srun: job 5647321 queued and waiting for resources
-srun: job 5647321 has been allocated resources
-srun: error: ml10: task 0: Exited with exit code 1
-srun: Terminating StepId=5647321.0
+      <data key="d7">srun: job 5657542 queued and waiting for resources
+srun: job 5657542 has been allocated resources
+srun: job 5657543 queued and waiting for resources
+srun: job 5657543 has been allocated resources
+srun: job 5657540 queued and waiting for resources
+srun: job 5657540 has been allocated resources
+srun: job 5657541 queued and waiting for resources
+srun: job 5657541 has been allocated resources
+srun: job 5657551 queued and waiting for resources
+srun: job 5657551 has been allocated resources
 </data>
-      <data key="d8">293291</data>
-      <data key="d9">5</data>
+      <data key="d8">3356790</data>
+      <data key="d9">0</data>
     </node>
     <node id="480594e1-53cb-429a-b497-f2d559fa6a14">
       <data key="d1">mkdir -p "$HUMANN_DB_DIR" &amp;&amp; \
@@ -132,187 +122,435 @@ echo "Folder $HUMANN_DB_DIR already exists. Skipping download."'</data>
       <data key="d6">Folder /nesi/nobackup/uoa03941/databases/humann_db already exists. Skipping download.
 </data>
       <data key="d7" />
-      <data key="d8">4116199</data>
+      <data key="d8">3316672</data>
       <data key="d9">0</data>
     </node>
     <node id="b0eb77b6-30d5-4193-9da4-50eba027ffef">
       <data key="d1">$HUMANN_ENV \
 humann_join_tables \
-  -i .\
+  -i $OUTPUT/humann \
   --file_name genefamilies \
-  -o humann_genefamilies_rpk.tsv</data>
-      <data key="d2">3004.812838160272</data>
-      <data key="d3">749.5867557193475</data>
-      <data key="d4" />
+  -o $OUTPUT/humann_genefamilies_rpk.tsv</data>
+      <data key="d2">2761.6285861117267</data>
+      <data key="d3">634.9826829148604</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_join_tables \
+  -i $OUTPUT/humann \
+  --file_name genefamilies \
+  -o $OUTPUT/humann_genefamilies_rpk.tsv'</data>
+      <data key="d6">Gene table created: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_rpk.tsv
+</data>
+      <data key="d7">INFO:    Using cached SIF image
+</data>
+      <data key="d8">3666969</data>
+      <data key="d9">0</data>
     </node>
     <node id="9be649f6-ee46-4abf-a761-ade91560b98f">
       <data key="d1">$HUMANN_ENV \
 humann_join_tables \
-  -i . \
+  -i $OUTPUT/humann \
   --file_name pathabundance \
-  -o humann_pathabundance_rpk.tsv</data>
-      <data key="d2">3004.967600065035</data>
-      <data key="d3">321.2148468688712</data>
-      <data key="d4" />
+  -o $OUTPUT/humann_pathabundance_rpk.tsv</data>
+      <data key="d2">2760.8516075871844</data>
+      <data key="d3">406.0032259356055</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_join_tables \
+  -i $OUTPUT/humann \
+  --file_name pathabundance \
+  -o $OUTPUT/humann_pathabundance_rpk.tsv'</data>
+      <data key="d6">Gene table created: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_pathabundance_rpk.tsv
+</data>
+      <data key="d7">INFO:    Using cached SIF image
+</data>
+      <data key="d8">3575440</data>
+      <data key="d9">0</data>
     </node>
     <node id="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
       <data key="d1">$HUMANN_ENV \
 humann_renorm_table \
-  -i $genefamilies \
+  -i $OUTPUT/humann_genefamilies_rpk.tsv \
   -u "cpm" \
-  -o humann_genefamilies_cpm.tsv \</data>
-      <data key="d2">3006.6244588744617</data>
-      <data key="d3">642.1461038961045</data>
-      <data key="d4" />
+  -o $OUTPUT/humann_genefamilies_cpm.tsv</data>
+      <data key="d2">3089.5493570825865</data>
+      <data key="d3">637.4874017495806</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_renorm_table \
+  -i $OUTPUT/humann_genefamilies_rpk.tsv \
+  -u "cpm" \
+  -o $OUTPUT/humann_genefamilies_cpm.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_rpk.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_rpk.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+</data>
+      <data key="d8">3674694</data>
+      <data key="d9">0</data>
     </node>
     <node id="8421a989-bfd1-4793-a41c-5a979c615dd1">
       <data key="d1">$HUMANN_ENV \
 humann_renorm_table \
-  -i $pathabundance \
+  -i $OUTPUT/humann_pathabundance_rpk.tsv \
   -u "cpm" \
-  -o humann_pathabundance_cpm.tsv</data>
-      <data key="d2">3005.8798872635625</data>
-      <data key="d3">433.9128610527665</data>
-      <data key="d4" />
+  -o $OUTPUT/humann_pathabundance_cpm.tsv</data>
+      <data key="d2">3094.395228047516</data>
+      <data key="d3">405.9606481736234</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_renorm_table \
+  -i $OUTPUT/humann_pathabundance_rpk.tsv \
+  -u "cpm" \
+  -o $OUTPUT/humann_pathabundance_cpm.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_pathabundance_rpk.tsv
+WARNING: Column 1 (FG00004_S26_L001_R_001_Abundance) has zero sum at level 1
+WARNING: Column 2 (FG00004_S26_L002_R_001_Abundance) has zero sum at level 1
+WARNING: Column 3 (FG00004_S26_L003_R_001_Abundance) has zero sum at level 1
+WARNING: Column 4 (FG00004_S26_L004_R_001_Abundance) has zero sum at level 1
+WARNING: Column 5 (FG00005_S50_L001_R_001_Abundance) has zero sum at level 1
+</data>
+      <data key="d8">3636940</data>
+      <data key="d9">0</data>
     </node>
     <node id="04916e36-0405-4c18-9a08-741b32a0cb45">
       <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
-  --input $genefamilies \
-  -c ${humann_db}/utility_mapping/map_level4ec_uniref90.txt.gz \
-  --output humann_level4ec.tsv</data>
-      <data key="d2">3677.8439460454247</data>
-      <data key="d3">365.2521104014658</data>
-      <data key="d4" />
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_level4ec_uniref90.txt.gz \
+  --output $OUTPUT/humann_level4ec.tsv</data>
+      <data key="d2">3635.5045702504194</data>
+      <data key="d3">515.5568944737344</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_regroup_table \
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_level4ec_uniref90.txt.gz \
+  --output $OUTPUT/humann_level4ec.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading custom groups file: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_level4ec_uniref90.txt.gz
+Loading mapping file from: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_level4ec_uniref90.txt.gz
+  This is a large file, one moment please...
+Original Feature Count: 58; Grouped 1+ times: 5 (8.6%); Grouped 2+ times: 0 (0.0%)
+</data>
+      <data key="d8">3749813</data>
+      <data key="d9">0</data>
     </node>
     <node id="a3ba86ef-7c25-41f5-ae56-9ad59cb03962">
       <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
-  --input $genefamilies \
-  -c ${humann_db}/utility_mapping/map_ko_uniref90.txt.gz \
-  --output humann_ko.tsv</data>
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_ko_uniref90.txt.gz \
+  --output $OUTPUT/humann_ko.tsv</data>
       <data key="d2">3631.3800954672874</data>
       <data key="d3">1084.6369544148881</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_regroup_table \
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_ko_uniref90.txt.gz \
+  --output $OUTPUT/humann_ko.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading custom groups file: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_ko_uniref90.txt.gz
+Loading mapping file from: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_ko_uniref90.txt.gz
+  This is a large file, one moment please...
+Original Feature Count: 58; Grouped 1+ times: 1 (1.7%); Grouped 2+ times: 0 (0.0%)
+</data>
+      <data key="d8">3857017</data>
+      <data key="d9">0</data>
     </node>
     <node id="7b6a8f68-4e80-4190-ae1a-1d9d85bd5041">
       <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
-  --input $genefamilies \
-  -c ${humann_db}/utility_mapping/map_pfam_uniref90.txt.gz \
-  --output humann_pfam.tsv</data>
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_pfam_uniref90.txt.gz \
+  --output $OUTPUT/humann_pfam.tsv</data>
       <data key="d2">3642.0153746168544</data>
       <data key="d3">856.0449105244204</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_regroup_table \
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_pfam_uniref90.txt.gz \
+  --output $OUTPUT/humann_pfam.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading custom groups file: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_pfam_uniref90.txt.gz
+Loading mapping file from: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_pfam_uniref90.txt.gz
+  This is a large file, one moment please...
+Original Feature Count: 58; Grouped 1+ times: 12 (20.7%); Grouped 2+ times: 0 (0.0%)
+</data>
+      <data key="d8">3843133</data>
+      <data key="d9">0</data>
     </node>
     <node id="905a7093-da32-4ae5-9a57-2a1dac112741">
       <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
-  --input $genefamilies \
-  -c ${humann_db}/utility_mapping/map_go_uniref90.txt.gz \
-  --output humann_go.tsv</data>
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_go_uniref90.txt.gz \
+  --output $OUTPUT/humann_go.tsv</data>
       <data key="d2">3642.937507210414</data>
       <data key="d3">747.3921970717187</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_regroup_table \
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_go_uniref90.txt.gz \
+  --output $OUTPUT/humann_go.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading custom groups file: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_go_uniref90.txt.gz
+Loading mapping file from: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_go_uniref90.txt.gz
+  This is a large file, one moment please...
+Original Feature Count: 58; Grouped 1+ times: 20 (34.5%); Grouped 2+ times: 7 (12.1%)
+</data>
+      <data key="d8">3828497</data>
+      <data key="d9">0</data>
     </node>
     <node id="e777cea5-e06e-4d96-a6ac-2a3f6197bb8e">
       <data key="d1">$HUMANN_ENV \
 humann_regroup_table \
-  --input $genefamilies \
-  -c ${humann_db}/utility_mapping/map_eggnog_uniref90.txt.gz \
-  --output humann_eggnog.tsv</data>
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_eggnog_uniref90.txt.gz \
+  --output $OUTPUT/humann_eggnog.tsv</data>
       <data key="d2">3639.423713652178</data>
       <data key="d3">641.8270296811601</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_regroup_table \
+  --input $OUTPUT/humann_genefamilies_cpm.tsv \
+  -c ${HUMANN_DB_DIR}/utility_mapping/map_eggnog_uniref90.txt.gz \
+  --output $OUTPUT/humann_eggnog.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading custom groups file: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_eggnog_uniref90.txt.gz
+Loading mapping file from: /nesi/nobackup/uoa03941/databases/humann_db/utility_mapping/map_eggnog_uniref90.txt.gz
+  This is a large file, one moment please...
+Original Feature Count: 58; Grouped 1+ times: 4 (6.9%); Grouped 2+ times: 3 (5.2%)
+</data>
+      <data key="d8">3803142</data>
+      <data key="d9">0</data>
     </node>
     <node id="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $genefamilies \
+  -i $OUTPUT/humann_genefamilies_cpm.tsv \
   -n metacyc-rxn \
   -s \
-  -o humann_genefamilies_rename.tsv</data>
+  -o $OUTPUT/humann_genefamilies_rename.tsv</data>
       <data key="d2">3677.4528751757834</data>
       <data key="d3">243.9575650370852</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_genefamilies_cpm.tsv \
+  -n metacyc-rxn \
+  -s \
+  -o $OUTPUT/humann_genefamilies_rename.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_genefamilies_cpm.tsv as stratified output, e.g. ['UniRef90_A0A015WY92', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_metacyc-rxn_name.txt.gz
+Renamed 0 of 58 entries (0.00%)
+</data>
+      <data key="d8">3723791</data>
+      <data key="d9">0</data>
     </node>
     <node id="7bcbe8c7-4d1e-49e6-9768-4f204c9601d6">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $pathabundance \
+  -i $OUTPUT/humann_pathabundance_cpm.tsv \
   -n metacyc-pwy \
   -s \
-  -o humann_pathabundance_rename.tsv</data>
+  -o $OUTPUT/humann_pathabundance_rename.tsv</data>
       <data key="d2">3670.1996212693825</data>
       <data key="d3">108.19979273653189</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_pathabundance_cpm.tsv \
+  -n metacyc-pwy \
+  -s \
+  -o $OUTPUT/humann_pathabundance_rename.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_pathabundance_cpm.tsv
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_metacyc-pwy_name.txt.gz
+Renamed 0 of 2 entries (0.00%)
+</data>
+      <data key="d8">3690887</data>
+      <data key="d9">0</data>
     </node>
     <node id="30821981-f6f4-45e8-ac03-f6f4c67de722">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i \
-  $ec \
+  -i $OUTPUT/humann_level4ec.tsv \
   -n ec \
   -s \
-  -o humann_ec_rename.tsv</data>
-      <data key="d2">4281.424670459474</data>
-      <data key="d3">413.0157378222489</data>
-      <data key="d4" />
+  -o $OUTPUT/humann_ec_rename.tsv</data>
+      <data key="d2">4286.71709243385</data>
+      <data key="d3">507.22084896613546</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_level4ec.tsv \
+  -n ec \
+  -s \
+  -o $OUTPUT/humann_ec_rename.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_level4ec.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_level4ec.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_level4ec_name.txt.gz
+Renamed 4 of 6 entries (66.67%)
+</data>
+      <data key="d8">3775802</data>
+      <data key="d9">0</data>
     </node>
     <node id="2ec1e923-9d0c-4eac-9df9-392199f36d1a">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $ko \
+  -i $OUTPUT/humann_ko.tsv \
   -n kegg-orthology \
   -s \
-  -o humann_ko_rename_orthology.tsv</data>
+  -o $OUTPUT/humann_ko_rename_orthology.tsv</data>
       <data key="d2">4274.607637080546</data>
       <data key="d3">1052.338517418039</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_ko.tsv \
+  -n kegg-orthology \
+  -s \
+  -o $OUTPUT/humann_ko_rename_orthology.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_ko_name.txt.gz
+Renamed 0 of 2 entries (0.00%)
+</data>
+      <data key="d8">3908189</data>
+      <data key="d9">0</data>
     </node>
     <node id="79adcecb-7270-44cb-b374-e934aae2db28">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $ko \
+  -i $OUTPUT/humann_ko.tsv \
   -n kegg-pathway \
   -s \
-  -o humann_ko_rename_pathway.tsv</data>
+  -o $OUTPUT/humann_ko_rename_pathway.tsv</data>
       <data key="d2">4274.681704086361</data>
       <data key="d3">1172.471759519528</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_ko.tsv \
+  -n kegg-pathway \
+  -s \
+  -o $OUTPUT/humann_ko_rename_pathway.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_kegg-pwy_name.txt.gz
+Renamed 0 of 2 entries (0.00%)
+</data>
+      <data key="d8">3915881</data>
+      <data key="d9">0</data>
     </node>
     <node id="9b25e437-90c1-4629-a7aa-cab266763500">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $ko \
+  -i $OUTPUT/humann_ko.tsv \
   -n kegg-module \
   -s \
-  -o humann_ko_rename_module.tsv</data>
+  -o $OUTPUT/humann_ko_rename_module.tsv</data>
       <data key="d2">4280.0190838983435</data>
       <data key="d3">1289.7699685494729</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_ko.tsv \
+  -n kegg-module \
+  -s \
+  -o $OUTPUT/humann_ko_rename_module.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_ko.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_kegg-mdl_name.txt.gz
+Renamed 0 of 2 entries (0.00%)
+</data>
+      <data key="d8">3923784</data>
+      <data key="d9">0</data>
     </node>
     <node id="f088e56b-ace9-4459-9844-07d6e02af5fc">
-      <data key="d1">$HUMANN_ENV
+      <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $pfam \
+  -i $OUTPUT/humann_pfam.tsv \
   -n pfam \
   -s \
-  -o humann_pfam_rename.tsv</data>
+  -o $OUTPUT/humann_pfam_rename.tsv</data>
       <data key="d2">4283.036208509117</data>
       <data key="d3">848.7194697989916</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_pfam.tsv \
+  -n pfam \
+  -s \
+  -o $OUTPUT/humann_pfam_rename.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_pfam.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_pfam.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_pfam_name.txt.gz
+Renamed 11 of 13 entries (84.62%)
+</data>
+      <data key="d8">3901019</data>
+      <data key="d9">0</data>
     </node>
     <node id="a064600e-2f40-4232-bcdd-5cceae6a58ff">
       <data key="d1">$HUMANN_ENV \
 humann_rename_table \
-  -i $go \
+  -i $OUTPUT/humann_go.tsv \
   -n infogo1000 \
   -s \
-  -o humann_go_rename.tsv</data>
+  -o $OUTPUT/humann_go_rename.tsv</data>
       <data key="d2">4282.41716089007</data>
       <data key="d3">716.1004221799436</data>
-      <data key="d4" />
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; $HUMANN_ENV \
+humann_rename_table \
+  -i $OUTPUT/humann_go.tsv \
+  -n infogo1000 \
+  -s \
+  -o $OUTPUT/humann_go_rename.tsv'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Loading table from: /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_go.tsv
+  Treating /nesi/nobackup/uoa03941/biobakery-workforce/work/humann_go.tsv as stratified output, e.g. ['UNGROUPED', 'unclassified']
+Loading mapping file from: /usr/local/lib/python3.12/site-packages/humann/tools/../data/misc/map_go_name.txt.gz
+Renamed 28 of 30 entries (93.33%)
+</data>
+      <data key="d8">3865555</data>
+      <data key="d9">0</data>
     </node>
     <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
       <data key="d1">[ -d $REFERENCE_GENOMES ] &amp;&amp; \
@@ -328,27 +566,80 @@ done</data>
       <data key="d4" />
     </node>
     <node id="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
-      <data key="d1">mkdir -p $OUTPUT/strainphlan/markers $OUTPUT/logs/sample2markers &amp;&amp; \
-$EXECUTOR sample2markers.sh</data>
-      <data key="d2">1617.072467975715</data>
-      <data key="d3">-183.90608144298676</data>
-      <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p $OUTPUT/strainphlan/markers
-$EXECUTOR \
-  --job-name=sample2markers \
-  --cpus-per-task=8 --mem=32G --time=2:00:00 \
-  --output=$OUTPUT/logs/sample2markers/sample2markers_%j.log \
-  --wrap="\
+      <data key="d1">mkdir -p $OUTPUT/strainphlan/markers &amp;&amp; \
 $METAPHLAN_CMD \
 sample2markers.py \
-  --input $OUTPUT/metaphlan_sgb/*/*.sam.bz2 \
-  -d $METAPHLAN_DB_DIR/mpa_vJan25_CHOCOPhlAnSGB_202503.pkl \
-  --output_dir $OUTPUT/strainphlan/markers\
-"'</data>
-      <data key="d6">Submitted batch job 5542246
+  --input $OUTPUT/metaphlan/*.sam \
+  -d $METAPHLAN_DB_DIR/${METAPHLAN_DB}.pkl \
+  --output_dir $OUTPUT/strainphlan/markers \
+  -f sam \
+  --nprocs 4</data>
+      <data key="d2">1547.0170200708046</data>
+      <data key="d3">-144.07063067352783</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p $OUTPUT/strainphlan/markers &amp;&amp; \
+$METAPHLAN_CMD \
+sample2markers.py \
+  --input $OUTPUT/metaphlan/*.sam \
+  -d $METAPHLAN_DB_DIR/${METAPHLAN_DB}.pkl \
+  --output_dir $OUTPUT/strainphlan/markers \
+  -f sam \
+  --nprocs 4'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Wed Apr 22 08:28:46 2026: Start samples to markers execution
+Wed Apr 22 08:28:46 2026: Using samtools version 1.22.1
+Wed Apr 22 08:28:46 2026: Creating temporary directory...
+Wed Apr 22 08:28:46 2026: Done.
+Wed Apr 22 08:28:46 2026: Filtering SAM files...
+Wed Apr 22 08:28:46 2026: Loading MetaPhlAn mpa_vJun23_CHOCOPhlAnSGB_202307 database...
+Wed Apr 22 08:29:16 2026: Done.
+Wed Apr 22 08:29:23 2026: Setting default parameters for mapper bowtie2
+Wed Apr 22 08:29:27 2026: Setting default parameters for mapper bowtie2
+Wed Apr 22 08:29:30 2026: Setting default parameters for mapper bowtie2
+Wed Apr 22 08:29:33 2026: Setting default parameters for mapper bowtie2
+Wed Apr 22 08:29:57 2026: Setting default parameters for mapper bowtie2
+Wed Apr 22 08:30:26 2026: Done.
+Wed Apr 22 08:30:26 2026: Converting input files...
+Wed Apr 22 08:30:26 2026: 	Converting samples to BAM format...
+Wed Apr 22 08:30:27 2026: 	Done.
+Wed Apr 22 08:30:27 2026: 	Sorting BAM samples...
+Wed Apr 22 08:30:27 2026: 	Done.
+Wed Apr 22 08:30:27 2026: 	Indexing BAM samples...
+Wed Apr 22 08:30:28 2026: 	Done.
+Wed Apr 22 08:30:28 2026: Done.
+Wed Apr 22 08:30:28 2026: Getting consensus markers from samples...
+Wed Apr 22 08:30:28 2026: 	Processing sample: /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L001_R_001.bam
+Wed Apr 22 08:30:28 2026: 		Loading the bam file and extracting information...
+Wed Apr 22 08:30:28 2026: [Warning] 			Sample /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L001_R_001.bam has empty BAM file, skipping
+Wed Apr 22 08:30:38 2026: [Warning] 		Skipping sample as it contains no markers after filtering
+Wed Apr 22 08:30:38 2026: 	Done.
+Wed Apr 22 08:30:38 2026: 	Processing sample: /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L003_R_001.bam
+Wed Apr 22 08:30:38 2026: 		Loading the bam file and extracting information...
+Wed Apr 22 08:30:38 2026: [Warning] 			Sample /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L003_R_001.bam has empty BAM file, skipping
+Wed Apr 22 08:30:47 2026: [Warning] 		Skipping sample as it contains no markers after filtering
+Wed Apr 22 08:30:47 2026: 	Done.
+Wed Apr 22 08:30:47 2026: 	Processing sample: /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L002_R_001.bam
+Wed Apr 22 08:30:47 2026: 		Loading the bam file and extracting information...
+Wed Apr 22 08:30:47 2026: [Warning] 			Sample /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L002_R_001.bam has empty BAM file, skipping
+Wed Apr 22 08:30:54 2026: [Warning] 		Skipping sample as it contains no markers after filtering
+Wed Apr 22 08:30:54 2026: 	Done.
+Wed Apr 22 08:30:54 2026: 	Processing sample: /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L004_R_001.bam
+Wed Apr 22 08:30:54 2026: 		Loading the bam file and extracting information...
+Wed Apr 22 08:30:54 2026: [Warning] 			Sample /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00004_S26_L004_R_001.bam has empty BAM file, skipping
+Wed Apr 22 08:31:03 2026: [Warning] 		Skipping sample as it contains no markers after filtering
+Wed Apr 22 08:31:03 2026: 	Done.
+Wed Apr 22 08:31:03 2026: 	Processing sample: /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00005_S50_L001_R_001.bam
+Wed Apr 22 08:31:03 2026: 		Loading the bam file and extracting information...
+Wed Apr 22 08:31:03 2026: [Warning] 			Sample /nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers/tmpj11loz0c/FG00005_S50_L001_R_001.bam has empty BAM file, skipping
+Wed Apr 22 08:31:11 2026: [Warning] 		Skipping sample as it contains no markers after filtering
+Wed Apr 22 08:31:11 2026: 	Done.
+Wed Apr 22 08:31:11 2026: Done.
+Wed Apr 22 08:31:11 2026: Removing temporary files...
+Wed Apr 22 08:31:11 2026: Done.
+Wed Apr 22 08:31:11 2026: Finish samples to markers execution (145.81 seconds): Results are stored at "/nesi/nobackup/uoa03941/biobakery-workforce/work/strainphlan/markers"
 </data>
-      <data key="d7" />
-      <data key="d8">1077694</data>
+      <data key="d8">6508</data>
       <data key="d9">0</data>
     </node>
     <node id="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
@@ -450,9 +741,10 @@ $METAPHLAN_ENV \
     "{read}" \
     --input_type fastq \
     --nproc 8 \
-    --db_dir /metaphlan_db \
+    --db_dir "$METAPHLAN_DB_DIR" \
     --index "$METAPHLAN_DB" \
     --mapout "$OUTPUT/metaphlan/{sample_id}_map.bz2" \
+    -s "$OUTPUT/metaphlan/{sample_id}.sam" \
     -o "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
     --force</data>
       <data key="d2">902.6036874793764</data>
@@ -466,24 +758,25 @@ $METAPHLAN_ENV \
     "{read}" \
     --input_type fastq \
     --nproc 8 \
-    --db_dir /metaphlan_db \
+    --db_dir "$METAPHLAN_DB_DIR" \
     --index "$METAPHLAN_DB" \
     --mapout "$OUTPUT/metaphlan/{sample_id}_map.bz2" \
+    -s "$OUTPUT/metaphlan/{sample_id}.sam" \
     -o "$OUTPUT/metaphlan/{sample_id}_profile.txt" \
     --force'</data>
       <data key="d6" />
-      <data key="d7">srun: job 5644356 queued and waiting for resources
-srun: job 5644356 has been allocated resources
-srun: job 5644358 queued and waiting for resources
-srun: job 5644358 has been allocated resources
-srun: job 5644359 queued and waiting for resources
-srun: job 5644359 has been allocated resources
-srun: job 5644357 queued and waiting for resources
-srun: job 5644357 has been allocated resources
-srun: job 5644511 queued and waiting for resources
-srun: job 5644511 has been allocated resources
+      <data key="d7">srun: job 5660723 queued and waiting for resources
+srun: job 5660723 has been allocated resources
+srun: job 5660721 queued and waiting for resources
+srun: job 5660721 has been allocated resources
+srun: job 5660722 queued and waiting for resources
+srun: job 5660722 has been allocated resources
+srun: job 5660720 queued and waiting for resources
+srun: job 5660720 has been allocated resources
+srun: job 5660844 queued and waiting for resources
+srun: job 5660844 has been allocated resources
 </data>
-      <data key="d8">3791218</data>
+      <data key="d8">4188224</data>
       <data key="d9">0</data>
     </node>
     <node id="7e146e2a-d5f4-4d12-a872-075728b23fd7">
@@ -500,15 +793,18 @@ echo "Folder $METAPHLAN_DB_DIR already exists. Skipping download."</data>
       <data key="d3">189.25169760954066</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$METAPHLAN_DB_DIR" &amp;&amp; \
-$METAPHLAN_CMD \
+[ -z "$(ls -A "$METAPHLAN_DB_DIR")" ] &amp;&amp; \
+$EXECUTOR \
+$METAPHLAN_ENV \
 metaphlan \
   --install \
-  --db_dir $METAPHLAN_DB_DIR'</data>
-      <data key="d6" />
-      <data key="d7">INFO:    Using cached SIF image
-Wed Apr 15 23:34:33 2026: The database is installed (mpa_vJan25_CHOCOPhlAnSGB_202503)
+  --index "$METAPHLAN_DB" \
+  --db_dir "$METAPHLAN_DB_DIR" | tail -n 5 || \
+echo "Folder $METAPHLAN_DB_DIR already exists. Skipping download."'</data>
+      <data key="d6">Folder /nesi/nobackup/uoa03941/databases/databases already exists. Skipping download.
 </data>
-      <data key="d8">1081140</data>
+      <data key="d7" />
+      <data key="d8">3167020</data>
       <data key="d9">0</data>
     </node>
     <node id="e091cb85-c472-42d9-8134-94535922f261">
@@ -528,7 +824,7 @@ merge_metaphlan_tables.py \
       <data key="d6" />
       <data key="d7">INFO:    Using cached SIF image
 </data>
-      <data key="d8">3926651</data>
+      <data key="d8">3538946</data>
       <data key="d9">0</data>
     </node>
     <node id="97e98c84-4958-4e9a-9f75-9fc031c519cb">
@@ -605,16 +901,8 @@ INFO:    Using cached SIF image
       <data key="d10">6945afee-592c-432e-b9f8-8940312f875e</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
-      <data key="d10">a61bfded-aeb5-461b-ad80-8fc3300c9019</data>
-      <data key="d11">blocking</data>
-    </edge>
     <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="b0eb77b6-30d5-4193-9da4-50eba027ffef">
       <data key="d10">d08db0bc-5a34-4a90-9dc8-0d045edfa8b5</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="8421a989-bfd1-4793-a41c-5a979c615dd1">
-      <data key="d10">8cbda68e-eef8-4531-a6a0-bc074f3dd705</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="473daaf2-62c1-4b2f-9dd0-6b001dccff23" target="9be649f6-ee46-4abf-a761-ade91560b98f">
@@ -623,6 +911,15 @@ INFO:    Using cached SIF image
     </edge>
     <edge source="480594e1-53cb-429a-b497-f2d559fa6a14" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
       <data key="d10">2046e797-d21c-4eab-8652-a85c168d1e54</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="b0eb77b6-30d5-4193-9da4-50eba027ffef" target="4cb12dce-923a-4e35-9ee2-8e42717dbe2c">
+      <data key="d10">0b14f0e5-dafb-4381-aa2c-32ed01777197</data>
+      <data key="d11">blocking</data>
+      <data key="d12" />
+    </edge>
+    <edge source="9be649f6-ee46-4abf-a761-ade91560b98f" target="8421a989-bfd1-4793-a41c-5a979c615dd1">
+      <data key="d10">5fd88f57-042e-44bc-b56b-bd8ea84b56ea</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">

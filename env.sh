@@ -21,24 +21,28 @@ export KNEADDATA_CONTAINER_URL="biobakery/kneaddata:latest"
 #export KNEADDATA_DB_DIR="/nesi/nobackup/uoa03941/databases/kneaddata_db"
 export KNEADDATA_DB_DIR="/nesi/nobackup/uoa03941/genomes"
 export KNEADDATA_DB="human_genome"
-export KNEADDATA_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $KNEADDATA_DB_DIR):/kneaddata_db docker://$KNEADDATA_CONTAINER_URL"
+#export KNEADDATA_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $KNEADDATA_DB_DIR):$(realpath $KNEADDATA_DB_DIR) docker://$METAPHLAN_CONTAINER_URL"
 #export KNEADDATA_ENV="docker run --rm -v $PWD:/data -w /data $KNEADDATA_URL"
+export KNEADDATA_ENV=""
 export KNEADDATA_RES="--cpus-per-task=4 --mem=20G --time=06:00:00 --output=$OUTPUT/logs/kneaddata/%x_%j.out"
 
 # Metaphlan
 #export METAPHLAN_URL="depot.galaxyproject.org/singularity/metaphlan:4.2.4--pyhdfd78af_0"
 export METAPHLAN_CONTAINER_URL="quay.io/biocontainers/metaphlan:4.2.4--pyhdfd78af_0"
 export METAPHLAN_DB_DIR="/nesi/nobackup/uoa03941/databases/metaphlan_db"
-export METAPHLAN_DB="mpa_vJan25_CHOCOPhlAnSGB_202503"
-export METAPHLAN_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $METAPHLAN_DB_DIR):/metaphlan_db docker://$METAPHLAN_CONTAINER_URL"
+#export METAPHLAN_DB="mpa_vJan25_CHOCOPhlAnSGB_202503" too new for hum3.9 to handle, 4 is not docker yet
+export METAPHLAN_DB="mpa_vJun23_CHOCOPhlAnSGB_202307"
+#export METAPHLAN_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $METAPHLAN_DB_DIR):$(realpath $METAPHLAN_DB_DIR) docker://$METAPHLAN_CONTAINER_URL"
 #export METAPHLAN_ENV="docker run --rm -v $PWD:/data -w /data $METAPHLAN_CONTAINER_URL"
+export METAPHLAN_ENV=""
 export METAPHLAN_RES="--cpus-per-task=8 --mem=48G --time=03:00:00 --output=$OUTPUT/logs/metaphlan/%x_%j.out"
 
 # Humann
-export HUMANN_CONTAINER_URL="docker://quay.io/biocontainers/humann:3.9--py312hdfd78af_0"
+export HUMANN_CONTAINER_URL="quay.io/biocontainers/humann:3.9--py312hdfd78af_0"
 export HUMANN_DB_DIR="/nesi/nobackup/uoa03941/databases/humann_db"
-export HUMANN_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $HUMANN_DB_DIR):/humann_db docker://$HUMANN_CONTAINER_URL"
+#export HUMANN_ENV="apptainer exec --cleanenv -B $PWD:/data -B $(realpath $HUMANN_DB_DIR):$(realpath $HUMANN_DB_DIR) docker://$HUMANN_CONTAINER_URL"
 #export HUMANN_ENV="docker run --rm -v $PWD:/data -w /data $HUMANN_CONTAINER_URL"
+export HUMANN_ENV=""
 export HUMANN_RES="--cpus-per-task=8 --mem=32G --time=12:00:00 --output=$OUTPUT/logs/humann/%x_%j.out"
 
 # Strainphlan

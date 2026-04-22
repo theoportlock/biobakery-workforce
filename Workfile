@@ -17,8 +17,8 @@
       <data key="d1">create_sample_table.py \
   $INPUT \
   -o $OUTPUT/ids.tsv</data>
-      <data key="d2">-289.90533720705804</data>
-      <data key="d3">413.3605464528952</data>
+      <data key="d2">-664.2873291351264</data>
+      <data key="d3">499.75639074398794</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
   $INPUT \
@@ -38,38 +38,31 @@
   --jobs 4 \
   "sbatch --wait code/humann.sh {name} {input_path} {output_dir}" \
   :::: $SAMPLE_TABLE</data>
-      <data key="d2">2691.922077922078</data>
-      <data key="d3">439.8603896103897</data>
+      <data key="d2">2586.361445060247</data>
+      <data key="d3">413.47023139493183</data>
       <data key="d4" />
     </node>
     <node id="480594e1-53cb-429a-b497-f2d559fa6a14">
-      <data key="d1">$HUMANN_CMD \
+      <data key="d1">mkdir -p "$HUMANN_DB_DIR" &amp;&amp; \
+$HUMANN_CMD \
 humann_databases \
   --update-config no \
   --download chocophlan full \
-  $HUMANN_DB_DIR</data>
-      <data key="d2">1960.843786462372</data>
-      <data key="d3">228.02034760317548</data>
-      <data key="d4" />
-    </node>
-    <node id="06863a26-6154-4a93-80f1-e1e2a8eadb1e">
-      <data key="d1">$HUMANN_CMD \
+  $HUMANN_DB_DIR \
+&amp;&amp; \
+$HUMANN_CMD \
 humann_databases \
   --update-config no \
   --download uniref uniref90_diamond \
-  $HUMANN_DB_DIR</data>
-      <data key="d2">1960.543527528592</data>
-      <data key="d3">347.61100546545913</data>
-      <data key="d4" />
-    </node>
-    <node id="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0">
-      <data key="d1">$HUMANN_CMD \
+  $HUMANN_DB_DIR \
+&amp;&amp; \
+$HUMANN_CMD \
 humann_databases \
   --update-config no \
   --download utility_mapping full \
   $HUMANN_DB_DIR</data>
-      <data key="d2">1958.7277793110395</data>
-      <data key="d3">468.5292569660901</data>
+      <data key="d2">1645.2042581128283</data>
+      <data key="d3">243.00828095223676</data>
       <data key="d4" />
     </node>
     <node id="b0eb77b6-30d5-4193-9da4-50eba027ffef">
@@ -252,7 +245,8 @@ humann_rename_table \
       <data key="d4" />
     </node>
     <node id="c0577b42-1729-439d-b34b-4cd2db421c23">
-      <data key="d1">for genome in ${reference_genomes}/*.fna; do
+      <data key="d1">[ -d $REFERENCE_GENOMES ] &amp;&amp; \
+for genome in $REFERENCE_GENOMES/*.fna; do
   $METAPHLAN_CMD \
   extract_markers.py \
     --input \$genome \
@@ -264,34 +258,40 @@ done</data>
       <data key="d4" />
     </node>
     <node id="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
-      <data key="d1">$METAPHLAN_CMD \
+      <data key="d1">mkdir -p $OUTPUT/strainphlan/markers $OUTPUT/logs/sample2markers &amp;&amp; \
+$EXECUTOR sample2markers.sh</data>
+      <data key="d2">1582.7652622956198</data>
+      <data key="d3">-92.86003559965727</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p $OUTPUT/strainphlan/markers
+$EXECUTOR \
+  --job-name=sample2markers \
+  --cpus-per-task=8 --mem=32G --time=2:00:00 \
+  --output=$OUTPUT/logs/sample2markers/sample2markers_%j.log \
+  --wrap="\
+$METAPHLAN_CMD \
 sample2markers.py \
-  --input ${samout} \
-  --nprocs ${task.cpus} \
-  --output_dir .</data>
-      <data key="d2">1686.4093073593094</data>
-      <data key="d3">-89.61406926406966</data>
-      <data key="d4" />
+  --input $OUTPUT/metaphlan_sgb/*/*.sam.bz2 \
+  -d $METAPHLAN_DB_DIR/mpa_vJan25_CHOCOPhlAnSGB_202503.pkl \
+  --output_dir $OUTPUT/strainphlan/markers\
+"'</data>
+      <data key="d6">Submitted batch job 5542246
+</data>
+      <data key="d7" />
+      <data key="d8">1077694</data>
+      <data key="d9">0</data>
     </node>
     <node id="8fa7fdf9-9a75-43ca-9aae-714d1d65db09">
-      <data key="d1">mkdir -p strainphlan_output
-
-$METAPHLAN_CMD \
-strainphlan \
-  --samples ${markers}/*.pkl \
-  --output_dir strainphlan_output \
-  --clades ${sgb} \
-  --nprocs ${task.cpus} \
-  --marker_in_n_samples ${params.min_samples_per_marker} \
-  --sample_with_n_markers ${params.min_markers_per_sample} \
-  --phylophlan_mode accurate \
-  --mutation_rates \
-  ${ref_opt}
-    
-# Move output to expected location
-mv strainphlan_output/${sgb} .</data>
-      <data key="d2">2168.6828822090747</data>
-      <data key="d3">-272.8640692640694</data>
+      <data key="d1">mkdir -p $OUTPUT/logs/strainphlan &amp;&amp; \
+parallel \
+  --colsep '\t' \
+  $EXECUTOR strainphlan.sh \
+  {clade} \
+  $OUTPUT/strainphlan/markers \
+  $OUTPUT/strainphlan \
+:::: clades.tsv</data>
+      <data key="d2">2209.6828822090747</data>
+      <data key="d3">-210.86406926406957</data>
       <data key="d4" />
     </node>
     <node id="84eae342-95b5-47af-b801-02da156c908c">
@@ -313,8 +313,8 @@ kneaddata_database \
   --download $KNEADDATA_DB bowtie2 \
   $KNEADDATA_DB_DIR \
 | tail -n 5</data>
-      <data key="d2">-265.2908074607026</data>
-      <data key="d3">581.6677608231826</data>
+      <data key="d2">-639.672799388771</data>
+      <data key="d3">668.0636051142753</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$KNEADDATA_DB_DIR" &amp;&amp; \
 $KNEADDATA_CMD \
@@ -328,7 +328,7 @@ kneaddata_database \
       <data key="d9">0</data>
     </node>
     <node id="11ea34fd-c241-4e39-9605-b8c3091b1a64">
-      <data key="d1">mkdir -p work/logs/kneaddata
+      <data key="d1">mkdir -p $OUTPUT/logs/kneaddata
 parallel \
   --header : \
   --colsep '\t' \
@@ -336,14 +336,14 @@ parallel \
   --resume-failed \
   --jobs 2 \
   $EXECUTOR \
-    code/kneaddata.sh \
-      {sample_id} {read1} {read2} \
-      $KNEADDATA_DB_DIR \
-      $OUTPUT/kneaddata \
-  :::: $OUTPUT/ids.tsv</data>
-      <data key="d2">221.1611371660855</data>
-      <data key="d3">372.027914568742</data>
-      <data key="d4">fail</data>
+  kneaddata.sh \
+  {sample_id} {read1} {read2} \
+  $KNEADDATA_DB_DIR \
+  $OUTPUT/kneaddata \
+:::: $OUTPUT/ids.tsv</data>
+      <data key="d2">-190.4178859955502</data>
+      <data key="d3">435.4006504480343</data>
+      <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p work/logs/kneaddata
 parallel \
   --header : \
@@ -358,14 +358,9 @@ parallel \
       $OUTPUT/kneaddata \
   :::: $OUTPUT/ids.tsv'</data>
       <data key="d6" />
-      <data key="d7">ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
-ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
-ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
-ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
-ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project root /nesi/nobackup/uoa03941/biobakery-workforce
-</data>
-      <data key="d8">2802973</data>
-      <data key="d9">5</data>
+      <data key="d7" />
+      <data key="d8">1975757</data>
+      <data key="d9">0</data>
     </node>
     <node id="7bd7d578-6bac-4670-990e-fcb742c1609d">
       <data key="d1">parallel \
@@ -373,93 +368,59 @@ ERROR: Path /nesi/nobackup/uoa03941/databases/kneaddata_db is outside project ro
   --colsep '\t' \
   --joblog $OUTPUT/logs/metaphlan.log \
   --resume-failed \
-  $EXECUTOR code/metaphlan.sh {name} {db_path} {r1} {r2} $OUTPUT/metaphlan_sgb \
-  :::: $OUTPUT/ids.tsv</data>
-      <data key="d2">928.8970609068912</data>
-      <data key="d3">313.54169253022513</data>
-      <data key="d4" />
-    </node>
-    <node id="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2">
-      <data key="d1">apptainer pull \
-  $APPTAINER_CACHEDIR/kneaddata.sif \
-  docker://biobakery/kneaddata:latest</data>
-      <data key="d2">-669.5945850727476</data>
-      <data key="d3">506.74265468332055</data>
+  --jobs 5 \
+  $EXECUTOR \
+  metaphlan.sh \
+  {sample_id} {read1} {read2} \
+  $METAPHLAN_DB_DIR \
+  $OUTPUT/metaphlan_sgb \
+:::: $OUTPUT/knead_ids.tsv</data>
+      <data key="d2">838.1344177640123</data>
+      <data key="d3">283.9429733781569</data>
       <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; apptainer pull \
-  $APPTAINER_CACHEDIR/kneaddata.sif \
-  docker://biobakery/kneaddata:latest'</data>
-      <data key="d6" />
-      <data key="d7">INFO:    Using cached SIF image
-</data>
-      <data key="d8">2829244</data>
-      <data key="d9">0</data>
-    </node>
-    <node id="710e40ff-ff20-403f-8d02-c3adc1e0cc0e">
-      <data key="d1">docker pull \
-  biobakery/kneaddata:latest</data>
-      <data key="d2">-624.90026756096</data>
-      <data key="d3">708.260288085588</data>
-      <data key="d4">ran</data>
-      <data key="d5">bash -c '. env.sh &amp;&amp; docker pull \
-  biobakery/kneaddata:latest'</data>
-      <data key="d6">latest: Pulling from biobakery/kneaddata
-723dcaac5a32: Pulling fs layer
-d7c3167c320d: Pulling fs layer
-b9bd2bd4c292: Pulling fs layer
-322ed380e680: Pulling fs layer
-198dba7fdeb0: Pulling fs layer
-6ac240b13098: Pulling fs layer
-ec642ad915a3: Pulling fs layer
-131f805ec7fd: Pulling fs layer
-0fe0f8803e3e: Pulling fs layer
-322ed380e680: Download complete
-6ac240b13098: Download complete
-131f805ec7fd: Download complete
-0fe0f8803e3e: Download complete
-d7c3167c320d: Download complete
-b9bd2bd4c292: Download complete
-723dcaac5a32: Download complete
-198dba7fdeb0: Download complete
-322ed380e680: Pull complete
-6ac240b13098: Pull complete
-131f805ec7fd: Pull complete
-d7c3167c320d: Pull complete
-ec642ad915a3: Download complete
-ec642ad915a3: Pull complete
-b9bd2bd4c292: Pull complete
-0fe0f8803e3e: Pull complete
-198dba7fdeb0: Pull complete
-723dcaac5a32: Pull complete
-Digest: sha256:4990133bace84012801b573b0ce37120ba11c55fb05c75a886798b70ddb02a44
-Status: Downloaded newer image for biobakery/kneaddata:latest
-docker.io/biobakery/kneaddata:latest
+      <data key="d5">bash -c '. env.sh &amp;&amp; parallel \
+  --header : \
+  --colsep '\''\t'\'' \
+  --joblog $OUTPUT/logs/metaphlan.log \
+  --resume-failed \
+  --jobs 5 \
+  $EXECUTOR \
+  metaphlan.sh \
+  {sample_id} {read1} {read2} \
+  $METAPHLAN_DB_DIR \
+  $OUTPUT/metaphlan_sgb \
+:::: $OUTPUT/knead_ids.tsv'</data>
+      <data key="d6">Submitted batch job 5542140
+Submitted batch job 5542142
+Submitted batch job 5542139
+Submitted batch job 5542141
+Submitted batch job 5542143
 </data>
       <data key="d7" />
-      <data key="d8">14998</data>
+      <data key="d8">1024776</data>
       <data key="d9">0</data>
     </node>
     <node id="e257bf77-3cee-4623-b292-c4be204b7150">
       <data key="d1">sample_id=FG00004_S26_L004_R_001
-read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
+read1=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
 $EXECUTOR \
   code/kneaddata.sh \
     $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata</data>
-      <data key="d2">-600.4328805561627</data>
-      <data key="d3">164.19583336060276</data>
+      <data key="d2">-973.944321920935</data>
+      <data key="d3">251.46222821499157</data>
       <data key="d4">ran</data>
       <data key="d5">bash -c '. env.sh &amp;&amp; sample_id=FG00004_S26_L004_R_001
-read1=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
-read2=/home/tpor598/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
+read1=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R1_001.fastq.gz
+read2=/nesi/nobackup/uoa03941/biobakery-workforce/testdata/FG00004_S26_L004_R2_001.fastq.gz 
 $EXECUTOR \
   code/kneaddata.sh \
     $sample_id $read1 $read2 \
     $KNEADDATA_DB_DIR \
     $OUTPUT/kneaddata'</data>
-      <data key="d6">[kneaddata] Executing for FG00004_S26_L004_R_001...
+      <data key="d6">[kneaddata] Executing for FG00004_S26_L004_R_001 using identity mounts...
 Decompressing gzipped file ...
 
 Decompressing gzipped file ...
@@ -468,48 +429,62 @@ Reformatting file sequence identifiers ...
 
 Reformatting file sequence identifiers ...
 
-Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersm7g0x6aj_decompressed_z_3j3ev1_FG00004_S26_L004_R1_001 ): 250.0
-Initial number of reads ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersqp9nu0z9_decompressed_zhplkpcn_FG00004_S26_L004_R2_001 ): 250.0
+Initial number of reads ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiers_iah_r9j_decompressed_0i6y4q0d_FG00004_S26_L004_R2_001 ): 250.0
+Initial number of reads ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/reformatted_identifiersuk2qdzn7_decompressed_xmfg80ki_FG00004_S26_L004_R1_001 ): 250.0
 Running Trimmomatic ... 
-Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.1.fastq ): 196.0
-Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.2.fastq ): 196.0
-Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.1.fastq ): 13.0
-Total reads after trimming ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.2.fastq ): 5.0
+Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.1.fastq ): 196.0
+Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.2.fastq ): 196.0
+Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.1.fastq ): 13.0
+Total reads after trimming ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001.trimmed.single.2.fastq ): 5.0
 Running trf ... 
 Running trf ... 
 Running trf ... 
 Running trf ... 
 Decontaminating ...
 Running bowtie2 ... 
-Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 194.0
-Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 194.0
-Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq ): 194.0
-Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq ): 194.0
-Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 13.0
-Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq ): 13.0
-Total reads after removing those found in reference database ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
-Total reads after merging results from multiple databases ( /data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq ): 5.0
+Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_1.fastq ): 194.0
+Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_paired_clean_2.fastq ): 194.0
+Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq ): 194.0
+Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq ): 194.0
+Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_1_clean.fastq ): 13.0
+Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq ): 13.0
+Total reads after removing those found in reference database ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_hg_39_bowtie2_unmatched_2_clean.fastq ): 5.0
+Total reads after merging results from multiple databases ( /nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq ): 5.0
 
 Final output files created: 
-/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq
-/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq
-/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq
-/data/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq
+/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_1.fastq
+/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_paired_2.fastq
+/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_1.fastq
+/nesi/nobackup/uoa03941/biobakery-workforce/work/kneaddata/FG00004_S26_L004_R_001_kneaddata/FG00004_S26_L004_R_001_unmatched_2.fastq
 
 [kneaddata] DONE FG00004_S26_L004_R_001
 </data>
-      <data key="d7" />
-      <data key="d8">42007</data>
+      <data key="d7">INFO:    Using cached SIF image
+WARNING: While bind mounting '/nesi/nobackup/uoa03941/biobakery-workforce/testdata:/nesi/nobackup/uoa03941/biobakery-workforce/testdata': destination is already in the mount point list
+</data>
+      <data key="d8">1908194</data>
       <data key="d9">0</data>
     </node>
     <node id="7e146e2a-d5f4-4d12-a872-075728b23fd7">
-      <data key="d1">$METAPHLAN_CMD \
+      <data key="d1">mkdir -p "$METAPHLAN_DB_DIR" &amp;&amp; \
+$METAPHLAN_CMD \
 metaphlan \
   --install \
   --db_dir $METAPHLAN_DB_DIR</data>
-      <data key="d2">594.43622496361</data>
-      <data key="d3">249.65650722686644</data>
-      <data key="d4" />
+      <data key="d2">378.5629013921937</data>
+      <data key="d3">198.14116678754377</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; mkdir -p "$METAPHLAN_DB_DIR" &amp;&amp; \
+$METAPHLAN_CMD \
+metaphlan \
+  --install \
+  --db_dir $METAPHLAN_DB_DIR'</data>
+      <data key="d6" />
+      <data key="d7">INFO:    Using cached SIF image
+Wed Apr 15 23:34:33 2026: The database is installed (mpa_vJan25_CHOCOPhlAnSGB_202503)
+</data>
+      <data key="d8">1081140</data>
+      <data key="d9">0</data>
     </node>
     <node id="e091cb85-c472-42d9-8134-94535922f261">
       <data key="d1">merge_metaphlan_tables.py \
@@ -536,6 +511,22 @@ metaphlan \
       <data key="d3">1077.6889172249496</data>
       <data key="d4" />
     </node>
+    <node id="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97">
+      <data key="d1">create_sample_table.py \
+   "work/kneaddata/*/*paired_{1,2}.fastq"\
+  -o $OUTPUT/knead_ids.tsv</data>
+      <data key="d2">380.773079265542</data>
+      <data key="d3">123.87620092107596</data>
+      <data key="d4">ran</data>
+      <data key="d5">bash -c '. env.sh &amp;&amp; create_sample_table.py \
+   "work/kneaddata/*/*paired_{1,2}.fastq"\
+  -o $OUTPUT/knead_ids.tsv'</data>
+      <data key="d6">Success! Created work/knead_ids.tsv with 5 pairs.
+</data>
+      <data key="d7" />
+      <data key="d8">689758</data>
+      <data key="d9">0</data>
+    </node>
     <edge source="3d5c7e8d-eeea-425d-a6bd-cded5dcf3875" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d10">6945afee-592c-432e-b9f8-8940312f875e</data>
       <data key="d11">blocking</data>
@@ -558,14 +549,6 @@ metaphlan \
     </edge>
     <edge source="480594e1-53cb-429a-b497-f2d559fa6a14" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
       <data key="d10">2046e797-d21c-4eab-8652-a85c168d1e54</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="06863a26-6154-4a93-80f1-e1e2a8eadb1e" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
-      <data key="d10">8d2c8b43-afbc-4fa5-a702-35c3b68cd7bf</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0" target="473daaf2-62c1-4b2f-9dd0-6b001dccff23">
-      <data key="d10">0b0b0ec9-3cd9-43a9-9b3d-17e9cc9de6a4</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="4cb12dce-923a-4e35-9ee2-8e42717dbe2c" target="a0d61d75-17bb-4a7f-8c2a-9f9fd3d2f2be">
@@ -640,16 +623,12 @@ metaphlan \
       <data key="d10">b8542fa8-1b28-4986-817f-01010459ba15</data>
       <data key="d11">blocking</data>
     </edge>
+    <edge source="11ea34fd-c241-4e39-9605-b8c3091b1a64" target="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97">
+      <data key="d10">c9fc2a2a-c2cf-440c-841b-a5ba565620b1</data>
+      <data key="d11">blocking</data>
+    </edge>
     <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="d717a7ec-bb2d-4098-8c0a-262d0b3c9f3b">
       <data key="d10">2ee82f35-5750-45a8-ba90-30a51fa44b6d</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="4a3d63e6-7966-4aeb-a4b5-789c73d1bda0">
-      <data key="d10">45d3770c-e04b-44da-99ed-69d3880bddbd</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="06863a26-6154-4a93-80f1-e1e2a8eadb1e">
-      <data key="d10">12e91135-9c86-45d2-bd7b-719568c3d496</data>
       <data key="d11">blocking</data>
     </edge>
     <edge source="7bd7d578-6bac-4670-990e-fcb742c1609d" target="480594e1-53cb-429a-b497-f2d559fa6a14">
@@ -664,14 +643,6 @@ metaphlan \
       <data key="d10">918327be-1356-4455-b499-aac6db04a741</data>
       <data key="d11">blocking</data>
     </edge>
-    <edge source="8cce8195-1cd3-4a36-9ac7-3aeb111d5cb2" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
-      <data key="d10">ca35f3b3-d131-4f3b-8e17-14b7dea26388</data>
-      <data key="d11">blocking</data>
-    </edge>
-    <edge source="710e40ff-ff20-403f-8d02-c3adc1e0cc0e" target="2084306b-d5fb-4f68-a31a-64cbce07ea7c">
-      <data key="d10">d78f9990-e3fc-45e3-a4b4-c5f2eb16d3a5</data>
-      <data key="d11">blocking</data>
-    </edge>
     <edge source="e257bf77-3cee-4623-b292-c4be204b7150" target="11ea34fd-c241-4e39-9605-b8c3091b1a64">
       <data key="d10">a5a44aa7-6c10-47b5-b746-72838bf6ae71</data>
       <data key="d11">blocking</data>
@@ -682,6 +653,10 @@ metaphlan \
     </edge>
     <edge source="695f0997-ed64-4818-8b84-e6072f644568" target="a7873609-90c5-4961-88f1-5e33c032ee5f">
       <data key="d10">1da6d275-859f-45f2-acfe-a74ccfe3c8f3</data>
+      <data key="d11">blocking</data>
+    </edge>
+    <edge source="fd0709fd-8d41-4a0a-a4ef-e515d9a86a97" target="7bd7d578-6bac-4670-990e-fcb742c1609d">
+      <data key="d10">e0289167-94d3-4f1c-978d-bcbe6ed0b6dc</data>
       <data key="d11">blocking</data>
     </edge>
     <data key="d0">bash -c '. env.sh &amp;&amp; {}'</data>

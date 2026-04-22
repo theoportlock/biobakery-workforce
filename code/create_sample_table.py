@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 import pandas as pd
 from collections import defaultdict
+from glob import glob
 
 # Common FASTQ extensions to strip from the ID
 FASTQ_SUFFIXES = [".fastq.gz", ".fq.gz", ".fastq", ".fq", ".gz"]
@@ -56,7 +57,7 @@ def main():
     search_dir = path_obj.parent if path_obj.parent != Path('.') else Path('.')
     file_glob = path_obj.name
 
-    files = list(search_dir.glob(file_glob))
+    files = list(Path("/").glob(glob_pattern_str.lstrip("/")))
     if not files:
         sys.exit(f"ERROR: No files found matching {glob_pattern_str}")
 
